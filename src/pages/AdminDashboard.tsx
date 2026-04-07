@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,9 @@ import {
   BookOpen, LayoutDashboard, Upload, FileText, Users, BarChart3,
   Pencil, Trash2, Menu, X
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const adminNav = [
   { label: "Dashboard", icon: LayoutDashboard, active: true },
@@ -24,15 +27,93 @@ const adminNav = [
   { label: "Analytics", icon: BarChart3 },
 ];
 
-const existingNotes = [
-  { id: 1, title: "Introduction to Arrays", category: "DSA", date: "2026-03-15", status: "Published" },
-  { id: 2, title: "React Hooks Deep Dive", category: "Web Dev", date: "2026-03-20", status: "Published" },
-  { id: 3, title: "SQL Joins Explained", category: "Databases", date: "2026-03-25", status: "Draft" },
-  { id: 4, title: "Neural Networks Basics", category: "ML", date: "2026-04-01", status: "Published" },
-];
+interface NoteRow {
+  id: string;
+  title: string;
+  description: string | null;
+  is_published: boolean;
+  created_at: string;
+  categories: { name: string } | null;
+}
 
 const AdminDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+  const [notes, setNotes] = useState<NoteRow[]>([]);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { user } = useAuth();
+  const { toast } = useToast();
+
+  const fetchData = async () => {
+    const [catRes, notesRes] = await Promise.all([
+      supabase.from("categories").select("id, name"),
+      supabase.from("notes").select("id, title, description, is_published, created_at, categories(name)").order("created_at", { ascending: false }),
+    ]);
+    if (catRes.data) setCategories(catRes.data);
+    if (notesRes.data) setNotes(notesRes.data as unknown as NoteRow[]);
+  };
+
+  useEffect(() => { fetchData(); }, []);
+
+  const handleUpload = async () => {
+    if (!user || !file || !title || !categoryId) {
+      toast({ title: "Missing fields", description: "Please fill all fields and select a PDF.", variant: "destructive" });
+      return;
+    }
+    setUploading(true);
+
+    const filePath = `${user.id}/${Date.now()}_${file.name}`;
+    const { error: uploadError } = await supabase.storage.from("notes-pdfs").upload(filePath, file);
+
+    if (uploadError) {
+      toast({ title: "Upload failed", description: uploadError.message, variant: "destructive" });
+      setUploading(false);
+      return;
+    }
+
+    const { data: urlData } = supabase.storage.from("notes-pdfs").getPublicUrl(filePath);
+
+    const { error: insertError } = await supabase.from("notes").insert({
+      user_id: user.id,
+      title,
+      description,
+      category_id: categoryId,
+      file_url: urlData.publicUrl,
+      is_published: true,
+    });
+
+    setUploading(false);
+    if (insertError) {
+      toast({ title: "Error", description: insertError.message, variant: "destructive" });
+    } else {
+      toast({ title: "Note published!" });
+      setTitle(""); setDescription(""); setCategoryId(""); setFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      fetchData();
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    const { error } = await supabase.from("notes").delete().eq("id", id);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      setNotes((prev) => prev.filter((n) => n.id !== id));
+      toast({ title: "Note deleted" });
+    }
+  };
+
+  const togglePublish = async (id: string, current: boolean) => {
+    const { error } = await supabase.from("notes").update({ is_published: !current }).eq("id", id);
+    if (!error) {
+      setNotes((prev) => prev.map((n) => n.id === id ? { ...n, is_published: !current } : n));
+    }
+  };
 
   return (
     <div className="min-h-screen flex bg-muted/20">
@@ -53,9 +134,7 @@ const AdminDashboard = () => {
             <button
               key={item.label}
               className={`flex items-center gap-3 w-full rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                item.active
-                  ? "bg-accent text-accent-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                item.active ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
               <item.icon className="h-4 w-4" />
@@ -77,28 +156,6 @@ const AdminDashboard = () => {
         </header>
 
         <main className="flex-1 p-4 md:p-6 space-y-6">
-          {/* Stats */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {[
-              { label: "Total Notes", value: "127", icon: FileText },
-              { label: "Total Users", value: "1,248", icon: Users },
-              { label: "Downloads", value: "5.2K", icon: BarChart3 },
-              { label: "Categories", value: "8", icon: LayoutDashboard },
-            ].map((s) => (
-              <Card key={s.label} className="shadow-card">
-                <CardContent className="p-4 flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-lg bg-accent flex items-center justify-center shrink-0">
-                    <s.icon className="h-5 w-5 text-accent-foreground" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold">{s.value}</p>
-                    <p className="text-xs text-muted-foreground">{s.label}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
           {/* Upload form */}
           <Card className="shadow-card">
             <CardHeader>
@@ -108,35 +165,47 @@ const AdminDashboard = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Title</Label>
-                  <Input placeholder="Note title" />
+                  <Input placeholder="Note title" value={title} onChange={(e) => setTitle(e.target.value)} />
                 </div>
                 <div className="space-y-2">
                   <Label>Category</Label>
-                  <Select>
+                  <Select value={categoryId} onValueChange={setCategoryId}>
                     <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="dsa">DSA</SelectItem>
-                      <SelectItem value="webdev">Web Development</SelectItem>
-                      <SelectItem value="databases">Databases</SelectItem>
-                      <SelectItem value="ml">Machine Learning</SelectItem>
-                      <SelectItem value="os">Operating Systems</SelectItem>
+                      {categories.map((c) => (
+                        <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
               </div>
               <div className="space-y-2">
                 <Label>Description</Label>
-                <Textarea placeholder="Brief description of the note..." rows={3} />
+                <Textarea placeholder="Brief description of the note..." rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
               </div>
               <div className="space-y-2">
                 <Label>PDF File</Label>
-                <div className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer hover:border-primary/50 transition-colors">
+                <div
+                  className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer hover:border-primary/50 transition-colors"
+                  onClick={() => fileInputRef.current?.click()}
+                >
                   <Upload className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground">Click to upload or drag and drop</p>
+                  <p className="text-sm text-muted-foreground">
+                    {file ? file.name : "Click to upload or drag and drop"}
+                  </p>
                   <p className="text-xs text-muted-foreground">PDF up to 20MB</p>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".pdf"
+                    className="hidden"
+                    onChange={(e) => setFile(e.target.files?.[0] || null)}
+                  />
                 </div>
               </div>
-              <Button>Publish Note</Button>
+              <Button onClick={handleUpload} disabled={uploading}>
+                {uploading ? "Uploading..." : "Publish Note"}
+              </Button>
             </CardContent>
           </Card>
 
@@ -158,24 +227,34 @@ const AdminDashboard = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {existingNotes.map((note) => (
+                    {notes.map((note) => (
                       <TableRow key={note.id}>
                         <TableCell className="font-medium">{note.title}</TableCell>
-                        <TableCell><Badge variant="secondary" className="bg-accent text-accent-foreground">{note.category}</Badge></TableCell>
-                        <TableCell className="text-muted-foreground text-sm">{note.date}</TableCell>
+                        <TableCell><Badge variant="secondary" className="bg-accent text-accent-foreground">{note.categories?.name || "—"}</Badge></TableCell>
+                        <TableCell className="text-muted-foreground text-sm">{new Date(note.created_at).toLocaleDateString()}</TableCell>
                         <TableCell>
-                          <Badge variant={note.status === "Published" ? "default" : "secondary"}>
-                            {note.status}
+                          <Badge
+                            variant={note.is_published ? "default" : "secondary"}
+                            className="cursor-pointer"
+                            onClick={() => togglePublish(note.id, note.is_published)}
+                          >
+                            {note.is_published ? "Published" : "Draft"}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-1">
-                            <Button size="icon" variant="ghost"><Pencil className="h-4 w-4" /></Button>
-                            <Button size="icon" variant="ghost" className="text-destructive"><Trash2 className="h-4 w-4" /></Button>
+                            <Button size="icon" variant="ghost" className="text-destructive" onClick={() => handleDelete(note.id)}>
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
                           </div>
                         </TableCell>
                       </TableRow>
                     ))}
+                    {notes.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={5} className="text-center text-muted-foreground py-8">No notes yet. Upload your first note above.</TableCell>
+                      </TableRow>
+                    )}
                   </TableBody>
                 </Table>
               </div>
