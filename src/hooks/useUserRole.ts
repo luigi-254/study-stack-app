@@ -8,6 +8,9 @@ export const useUserRole = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
+    setIsAdmin(false);
+
     const checkRole = async () => {
       if (!user) {
         setIsAdmin(false);
@@ -15,12 +18,10 @@ export const useUserRole = () => {
         return;
       }
 
-      console.log("Checking role for user:", user.id);
       const { data, error } = await supabase.rpc("has_role", {
         _user_id: user.id,
         _role: "admin",
       });
-      console.log("has_role result:", data, "error:", error);
 
       setIsAdmin(!!data && !error);
       setLoading(false);
