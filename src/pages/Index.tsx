@@ -8,15 +8,22 @@ import {
   BookOpen, Code, Database, Brain, Shield, FolderOpen, BarChart3,
   ArrowRight, GraduationCap, FileText
 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
-const categories = [
-  { name: "Data Structures & Algorithms", icon: Code, count: 24 },
-  { name: "Web Development", icon: BookOpen, count: 18 },
-  { name: "Databases", icon: Database, count: 12 },
-  { name: "Machine Learning", icon: Brain, count: 15 },
-  { name: "Operating Systems", icon: FileText, count: 10 },
-  { name: "Computer Networks", icon: GraduationCap, count: 8 },
-];
+const iconMap: Record<string, React.ElementType> = {
+  "Data Structures": Code,
+  "Algorithms": Code,
+  "Web Development": BookOpen,
+  "Databases": Database,
+  "Machine Learning": Brain,
+  "AI": Brain,
+  "Operating Systems": FileText,
+  "Networks": GraduationCap,
+  "Computer Science": GraduationCap,
+};
+
+const defaultIcon = BookOpen;
 
 const features = [
   { title: "Secure Access", description: "Your notes are protected with authentication and role-based access control.", icon: Shield },
@@ -24,7 +31,33 @@ const features = [
   { title: "Progress Tracking", description: "Track your reading progress and mark notes as completed.", icon: BarChart3 },
 ];
 
-const Index = () => (
+const Index = () => {
+  const [realCategories, setRealCategories] = useState<{ name: string; count: number }[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const { data, error } = await supabase
+        .from("notes")
+        .select("categories(name)")
+        .eq("is_published", true);
+
+      if (!error && data) {
+        const counts: Record<string, number> = {};
+        (data as unknown as { categories: { name: string } | null }[]).forEach((item) => {
+          const name = item.categories?.name;
+          if (name) counts[name] = (counts[name] || 0) + 1;
+        });
+        const formatted = Object.entries(counts).map(([name, count]) => ({ name, count }));
+        setRealCategories(formatted);
+      }
+      setLoading(false);
+    };
+
+    fetchCategories();
+  }, []);
+
+  return (
   <div className="min-h-screen flex flex-col">
     <Navbar />
 
@@ -59,20 +92,39 @@ const Index = () => (
         <p className="text-muted-foreground">Find notes organized by subject area</p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {categories.map((cat) => (
-          <Card key={cat.name} className="shadow-card hover:shadow-card-hover transition-shadow cursor-pointer group">
-            <CardContent className="flex items-center gap-4 p-5">
-              <div className="h-11 w-11 rounded-lg bg-accent flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                <cat.icon className="h-5 w-5 text-accent-foreground group-hover:text-primary-foreground" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-sm">{cat.name}</h3>
-                <p className="text-xs text-muted-foreground">{cat.count} notes</p>
-              </div>
-              <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-            </CardContent>
-          </Card>
-        ))}
+        {loading ? (
+          Array(6).fill(0).map((_, i) => (
+            <div key={i} className="h-24 rounded-xl bg-muted animate-pulse" />
+          ))
+        ) : realCategories.length > 0 ? (
+          realCategories.map((cat) => {
+            const Icon = iconMap[cat.name] || iconMap[Object.keys(iconMap).find(k => cat.name.includes(k)) || ""] || defaultIcon;
+            return (
+              <Link 
+                key={cat.name} 
+                to={`/dashboard?category=${encodeURIComponent(cat.name)}`}
+                className="block"
+              >
+                <Card className="shadow-card hover:shadow-card-hover transition-shadow cursor-pointer group h-full">
+                  <CardContent className="flex items-center gap-4 p-5">
+                    <div className="h-11 w-11 rounded-lg bg-accent flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                      <Icon className="h-5 w-5 text-accent-foreground group-hover:text-primary-foreground" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-sm group-hover:text-primary transition-colors">{cat.name}</h3>
+                      <p className="text-xs text-muted-foreground">{cat.count} notes</p>
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all -translate-x-2 group-hover:translate-x-0" />
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })
+        ) : (
+          <div className="col-span-full text-center py-10 text-muted-foreground">
+            No categories available yet.
+          </div>
+        )}
       </div>
     </section>
 
@@ -101,6 +153,7 @@ const Index = () => (
 
     <Footer />
   </div>
-);
+  );
+};
 
 export default Index;

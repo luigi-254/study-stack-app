@@ -31,9 +31,9 @@ const Footer = () => (
       <div>
         <h4 className="font-semibold mb-3 text-sm">Contact</h4>
         <div className="space-y-2 text-sm text-muted-foreground">
-          <p className="flex items-center gap-2"><Mail className="h-4 w-4" /> support@notehub.com</p>
-          <p className="flex items-center gap-2"><Phone className="h-4 w-4" /> +1 (555) 123-4567</p>
-          <p className="flex items-center gap-2"><MapPin className="h-4 w-4" /> San Francisco, CA</p>
+          <p className="flex items-center gap-2"><Mail className="h-4 w-4" />jkemboi744@gmail.com</p>
+          <p className="flex items-center gap-2"><Phone className="h-4 w-4" /> +254795396214</p>
+          <p className="flex items-center gap-2"><MapPin className="h-4 w-4" /> Nairobi, Kenya</p>
         </div>
       </div>
     </div>

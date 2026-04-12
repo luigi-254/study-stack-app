@@ -17,6 +17,7 @@ interface NoteDetail {
 const PdfViewer = () => {
   const { id } = useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [note, setNote] = useState<NoteDetail | null>(null);
   const [allNotes, setAllNotes] = useState<{ id: string; title: string }[]>([]);
@@ -55,7 +56,15 @@ const PdfViewer = () => {
   }, [id, user]);
 
   const handleMarkComplete = async () => {
-    if (!user || !id) return;
+    if (!user) {
+      toast({ 
+        title: "Login Required", 
+        description: "Please sign in to track your reading progress.",
+        action: <Button variant="default" size="sm" onClick={() => navigate("/login")}>Login</Button>
+      });
+      return;
+    }
+    if (!id) return;
     const newVal = !completed;
     setCompleted(newVal);
     await supabase
