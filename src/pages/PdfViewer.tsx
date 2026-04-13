@@ -49,7 +49,7 @@ const PdfViewer = () => {
     const fetchNoteData = async () => {
       setLoading(true);
       try {
-        let { data, error } = await supabase
+        const { data, error } = await supabase
           .from("notes")
           .select("*, categories(name)")
           .eq("id", id)
@@ -61,29 +61,25 @@ const PdfViewer = () => {
           return;
         }
 
-        if (error) {
-          toast({ title: "Error", description: "Note not found", variant: "destructive" });
-          navigate("/dashboard");
-          return;
-        }
-
-        if (data) {
-          setNote(data as any);
-          // Gently try to increment view count, ignore failures
-          supabase.from("notes").update({ views_count: ((data as any).views_count || 0) + 1 }).eq("id", id).then();
-        }
+        setNote(data as any);
+        
+        // Increment view count (fire and forget)
+        supabase.from("notes").update({ views_count: (data.views_count || 0) + 1 }).eq("id", id).then();
 
         // Fetch recommendations (same category)
-        const { data: recs } = await supabase
-          .from("notes")
-          .select("id, title, categories(name)")
-          .eq("category_id", (data as any).category_id)
-          .neq("id", id)
-          .limit(5);
-        if (recs) setRecommendations(recs);
+        if (data.category_id) {
+          const { data: recs } = await supabase
+            .from("notes")
+            .select("id, title, categories(name)")
+            .eq("is_published", true)
+            .eq("category_id", data.category_id)
+            .neq("id", id)
+            .limit(5);
+          if (recs) setRecommendations(recs);
+        }
       } catch (err) {
-         console.error("PdfViewer fetch failed:", err);
-         toast({ title: "Reader Error", description: "Could not load note content.", variant: "destructive" });
+        console.error("PdfViewer fetch failed:", err);
+        toast({ title: "Reader Error", description: "Could not load note content.", variant: "destructive" });
       }
 
       setLoading(false);
@@ -266,12 +262,13 @@ const PdfViewer = () => {
             {/* The Reader Container */}
             <div className="relative group">
                <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-orange-500/20 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-               <div className="relative bg-white rounded-2xl border shadow-2xl overflow-hidden aspect-[3/4] md:aspect-[4/3] w-full">
+               <div className="relative bg-white rounded-2xl border shadow-2xl overflow-hidden w-full" style={{ minHeight: '600px', height: '80vh', maxHeight: '1000px' }}>
                   {note?.file_url ? (
                     <iframe
-                      src={note.file_url}
+                      src={`${note.file_url}#toolbar=1&navpanes=0`}
                       className="w-full h-full border-none"
                       title={note.title}
+                      allow="fullscreen"
                     />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground p-12">
