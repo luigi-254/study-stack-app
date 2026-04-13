@@ -15,11 +15,10 @@ interface NoteWithStats {
   id: string;
   title: string;
   description: string | null;
+  thumbnail_url?: string | null;
   categories: { name: string } | null;
   profiles?: { full_name: string | null } | null;
   views_count?: number;
-  likes?: { count: number }[];
-  comments?: { count: number }[];
 }
 
 const Index = () => {

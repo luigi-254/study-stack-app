@@ -284,7 +284,7 @@ const AdminDashboard = () => {
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={notesByCategory}>
                         <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                        <XAxis dataKey="name" fontSize={10} fontBold />
+                        <XAxis dataKey="name" fontSize={10} fontWeight="bold" />
                         <YAxis fontSize={10} />
                         <Tooltip />
                         <Bar dataKey="count" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />

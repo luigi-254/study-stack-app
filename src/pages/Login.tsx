@@ -26,21 +26,20 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { user, error } = await signIn(email, password);
+    const { error } = await signIn(email, password);
+    setLoading(false);
     
     if (error) {
-      setLoading(false);
       toast({ title: "Login failed", description: error, variant: "destructive" });
-    } else if (user) {
-      // Check if user is an admin
-      const { data: isAdmin } = await supabase.rpc("has_role", {
-        _user_id: user.id,
-        _role: "admin",
-      });
-
-      setLoading(false);
-      if (isAdmin) {
-        navigate("/admin");
+    } else {
+      // Get current user after sign in
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      if (currentUser) {
+        const { data: isAdmin } = await supabase.rpc("has_role", {
+          _user_id: currentUser.id,
+          _role: "admin",
+        });
+        navigate(isAdmin ? "/admin" : "/dashboard");
       } else {
         navigate("/dashboard");
       }

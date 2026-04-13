@@ -19,6 +19,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { getNoteCoverImage } from "@/lib/imageUtils";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 interface NoteDetail {
   id: string;
@@ -55,14 +56,9 @@ const PdfViewer = () => {
           .single();
 
         if (error || !data) {
-           // Fallback if profiles join fails
-           const fallback = await supabase
-            .from("notes")
-            .select("title, description, file_url")
-            .eq("id", id)
-            .single();
-           data = fallback.data;
-           error = fallback.error;
+          toast({ title: "Error", description: "Note not found", variant: "destructive" });
+          navigate("/dashboard");
+          return;
         }
 
         if (error) {

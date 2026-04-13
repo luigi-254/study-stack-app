@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { 
   BookOpen, Menu, X, LogOut, ChevronDown, 
-  Search, PlusCircle, User, BookMarked, Settings 
+  Search, PlusCircle, User, BookMarked, Settings, LayoutDashboard 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
