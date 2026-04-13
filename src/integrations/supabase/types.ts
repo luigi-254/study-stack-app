@@ -14,6 +14,35 @@ export type Database = {
   }
   public: {
     Tables: {
+      bookmarks: {
+        Row: {
+          created_at: string
+          id: string
+          note_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          note_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          note_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmarks_note_id_fkey"
+            columns: ["note_id"]
+            isOneToOne: false
+            referencedRelation: "notes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       categories: {
         Row: {
           created_at: string
@@ -32,6 +61,35 @@ export type Database = {
         }
         Relationships: []
       }
+      likes: {
+        Row: {
+          created_at: string
+          id: string
+          note_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          note_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          note_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "likes_note_id_fkey"
+            columns: ["note_id"]
+            isOneToOne: false
+            referencedRelation: "notes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notes: {
         Row: {
           category_id: string | null
@@ -40,9 +98,12 @@ export type Database = {
           file_url: string
           id: string
           is_published: boolean
+          is_top_pick: boolean
+          thumbnail_url: string | null
           title: string
           updated_at: string
           user_id: string
+          views_count: number
         }
         Insert: {
           category_id?: string | null
@@ -51,9 +112,12 @@ export type Database = {
           file_url: string
           id?: string
           is_published?: boolean
+          is_top_pick?: boolean
+          thumbnail_url?: string | null
           title: string
           updated_at?: string
           user_id: string
+          views_count?: number
         }
         Update: {
           category_id?: string | null
@@ -62,9 +126,12 @@ export type Database = {
           file_url?: string
           id?: string
           is_published?: boolean
+          is_top_pick?: boolean
+          thumbnail_url?: string | null
           title?: string
           updated_at?: string
           user_id?: string
+          views_count?: number
         }
         Relationships: [
           {
