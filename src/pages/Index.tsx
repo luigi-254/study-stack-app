@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import NoteCard from "@/components/NoteCard";
 import { 
-  ArrowRight, Sparkles, TrendingUp, Clock, 
-  ChevronRight, BookOpen, GraduationCap, PlusCircle 
+  Sparkles, ChevronRight, BookOpen, GraduationCap, PlusCircle 
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
