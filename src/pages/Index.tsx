@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import NoteCard from "@/components/NoteCard";
 import { 
-  ArrowRight, Sparkles, TrendingUp, Clock, 
-  ChevronRight, BookOpen, GraduationCap, PlusCircle 
+  Sparkles, ChevronRight, BookOpen, GraduationCap, PlusCircle 
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -95,30 +93,44 @@ const Index = () => {
       <Navbar />
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden pt-16 pb-20 md:pt-24 md:pb-32">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(var(--primary)/0.1),transparent)]" />
+        {/* Hero Section - Wattpad style 2-col */}
+        <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28">
           <div className="container relative z-10">
-            <div className="max-w-4xl mx-auto text-center space-y-8">
-              <Badge variant="outline" className="px-4 py-1.5 border-primary/20 text-primary bg-primary/5 rounded-full animate-fade-in">
-                <Sparkles className="h-3.5 w-3.5 mr-2 fill-primary" />
-                Curated by Experts, Crafted for You
-              </Badge>
-              <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[1.1] animate-fade-in" style={{ animationDelay: '0.1s' }}>
-                Your Academic Journey, <br/>
-                <span className="text-primary italic">Perfectly Curated.</span>
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                Skip the noise. Explore hand-picked, high-impact notes selected by our editorial team 
-                to help you master your subjects faster.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-                <Button size="lg" asChild className="h-14 px-8 text-lg bg-foreground text-background hover:bg-foreground/90 shadow-xl">
-                  <Link to="/register">Join the Community</Link>
-                </Button>
-                <Button size="lg" variant="ghost" asChild className="h-14 px-8 text-lg">
-                  <Link to="/dashboard">Browse Full Library</Link>
-                </Button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+              {/* Left: Headline */}
+              <div className="space-y-8 animate-fade-in">
+                <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] text-foreground">
+                  Your Academic Journey, Perfectly Simplified.
+                </h1>
+                <p className="text-lg md:text-xl text-muted-foreground max-w-lg leading-relaxed">
+                  Skip the noise. Explore hand-picked, high-impact notes to help you master your subjects faster.
+                </p>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+                  <Button size="lg" asChild className="h-14 px-10 text-base bg-foreground text-background hover:bg-foreground/90 w-full sm:w-auto">
+                    <Link to="/register">Join the Community</Link>
+                  </Button>
+                  <Link to="/dashboard" className="text-base font-bold text-foreground hover:text-primary transition-colors text-center sm:text-left underline-offset-4 hover:underline">
+                    Browse Full Library →
+                  </Link>
+                </div>
+              </div>
+
+              {/* Right: Soft abstract visual */}
+              <div className="relative aspect-square max-w-md md:max-w-none mx-auto w-full animate-fade-in" style={{ animationDelay: '0.15s' }}>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="absolute w-[80%] h-[80%] rounded-full bg-primary/20 blur-2xl" />
+                  <div className="absolute right-4 top-8 w-48 h-64 md:w-64 md:h-80 rounded-3xl bg-primary shadow-card-hover rotate-6" />
+                  <div className="absolute left-4 bottom-8 w-44 h-60 md:w-60 md:h-72 rounded-3xl bg-foreground shadow-card-hover -rotate-6 flex items-end p-6">
+                    <div className="space-y-2">
+                      <div className="h-2 w-16 rounded-full bg-white/30" />
+                      <div className="h-3 w-28 rounded-full bg-white/60" />
+                      <div className="h-2 w-20 rounded-full bg-white/30" />
+                    </div>
+                  </div>
+                  <div className="relative z-10 w-32 h-32 md:w-40 md:h-40 rounded-full bg-card shadow-card-hover flex items-center justify-center">
+                    <BookOpen className="h-12 w-12 md:h-16 md:w-16 text-primary" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -200,42 +212,6 @@ const Index = () => {
                 </div>
                 <h3 className="font-bold">Browse All</h3>
               </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Recent Releases */}
-        <section className="py-20 bg-secondary/20">
-          <div className="container">
-             <div className="flex items-center gap-3 mb-10">
-                <div className="h-10 w-10 bg-primary/10 rounded-full flex items-center justify-center">
-                  <Clock className="h-5 w-5 text-primary" />
-                </div>
-                <h2 className="text-3xl font-black">Just Added</h2>
-              </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {loading ? (
-                Array(8).fill(0).map((_, i) => (
-                  <div key={i} className="aspect-[3/4] rounded-2xl bg-muted animate-pulse" />
-                ))
-              ) : recentNotes.map((note) => (
-                <NoteCard 
-                  key={note.id}
-                  id={note.id}
-                  title={note.title}
-                  description={note.description}
-                  category={note.categories?.name || "Uncategorized"}
-                  author={note.profiles?.full_name || "NoteHub Author"}
-                  views={note.views_count}
-                />
-              ))}
-            </div>
-
-            <div className="mt-16 text-center">
-               <Button size="lg" variant="outline" className="h-14 px-10 rounded-full font-bold border-2" asChild>
-                 <Link to="/dashboard">Explore Full Library <ArrowRight className="ml-2 h-5 w-5" /></Link>
-               </Button>
             </div>
           </div>
         </section>
