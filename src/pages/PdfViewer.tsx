@@ -142,6 +142,30 @@ const PdfViewer = () => {
     window.print();
   };
 
+  const toggleCompleted = async () => {
+    if (!user) {
+      toast({ title: "Login Required", description: "Sign in to track your progress." });
+      return;
+    }
+    const newState = !completed;
+    setCompleted(newState);
+    const { error } = await supabase
+      .from("user_note_progress")
+      .upsert(
+        { user_id: user.id, note_id: id as string, completed: newState, updated_at: new Date().toISOString() },
+        { onConflict: "user_id,note_id" }
+      );
+    if (error) {
+      setCompleted(!newState);
+      toast({ title: "Error", description: "Could not update progress.", variant: "destructive" });
+      return;
+    }
+    toast({
+      title: newState ? "Marked as completed!" : "Marked as not completed",
+      description: newState ? "Added to your library." : "Removed from completed list.",
+    });
+  };
+
   const coverImage = getNoteCoverImage(note?.categories?.name);
 
   if (loading) {
@@ -232,6 +256,14 @@ const PdfViewer = () => {
               </Button>
               <Button variant="secondary" className="rounded-full px-6 font-bold" onClick={copyToClipboard}>
                 <Share2 className="h-4 w-4 mr-2" /> Share
+              </Button>
+              <Button
+                variant={completed ? "default" : "secondary"}
+                className={`rounded-full px-6 font-bold ${completed ? "bg-green-600 hover:bg-green-700 text-white" : ""}`}
+                onClick={toggleCompleted}
+              >
+                <CheckCircle2 className={`h-4 w-4 mr-2 ${completed ? "fill-white text-green-600" : ""}`} />
+                {completed ? "Completed" : "Mark as Completed"}
               </Button>
               <div className="ml-auto">
                 <DropdownMenu>
