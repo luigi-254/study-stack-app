@@ -113,7 +113,7 @@ const Index = () => {
                 to help you master your subjects faster.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-                <Button size="lg" variant="accent" asChild className="h-14 px-8 text-lg shadow-xl shadow-accent/20">
+                <Button size="lg" asChild className="h-14 px-8 text-lg bg-foreground text-background hover:bg-foreground/90 shadow-xl">
                   <Link to="/register">Join the Community</Link>
                 </Button>
                 <Button size="lg" variant="ghost" asChild className="h-14 px-8 text-lg">
