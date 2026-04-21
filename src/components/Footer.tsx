@@ -1,44 +1,38 @@
-import { BookOpen, Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => (
-  <footer className="border-t bg-muted/30 mt-20">
-    <div className="container py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
-      <div>
-        <div className="flex items-center gap-2 font-bold text-lg mb-3">
-          <BookOpen className="h-5 w-5 text-primary" />
-          <span>NoteHub</span>
-        </div>
-        <p className="text-sm text-muted-foreground">Quality learning notes for students. Access structured study materials anytime, anywhere.</p>
-      </div>
-      <div>
-        <h4 className="font-semibold mb-3 text-sm">Quick Links</h4>
-        <div className="space-y-2">
-          <Link to="/" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Home</Link>
-          <Link to="/dashboard" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Courses</Link>
-          <Link to="/login" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Login</Link>
-        </div>
-      </div>
-      <div>
-        <h4 className="font-semibold mb-3 text-sm">Categories</h4>
-        <div className="space-y-2 text-sm text-muted-foreground">
-          <p>Data Structures</p>
-          <p>Web Development</p>
-          <p>Databases</p>
-          <p>Machine Learning</p>
-        </div>
-      </div>
-      <div>
-        <h4 className="font-semibold mb-3 text-sm">Contact</h4>
-        <div className="space-y-2 text-sm text-muted-foreground">
-          <p className="flex items-center gap-2"><Mail className="h-4 w-4" />jkemboi744@gmail.com</p>
-          <p className="flex items-center gap-2"><Phone className="h-4 w-4" /> +254795396214</p>
-          <p className="flex items-center gap-2"><MapPin className="h-4 w-4" /> Nairobi, Kenya</p>
-        </div>
-      </div>
+  <footer className="mt-20">
+    {/* Wavy transition into black footer */}
+    <div className="relative -mb-px">
+      <svg
+        viewBox="0 0 1440 120"
+        preserveAspectRatio="none"
+        className="block w-full h-16 md:h-24"
+        aria-hidden="true"
+      >
+        <path
+          d="M0,64 C240,128 480,0 720,48 C960,96 1200,32 1440,80 L1440,120 L0,120 Z"
+          fill="#000000"
+        />
+      </svg>
     </div>
-    <div className="border-t py-4">
-      <p className="text-center text-xs text-muted-foreground">© 2026 NoteHub. All rights reserved.</p>
+    <div className="bg-black text-white">
+      <div className="container py-16">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+          <Link to="/" className="font-display font-extrabold text-3xl tracking-tight">
+            NoteHub
+          </Link>
+          <nav className="flex flex-wrap items-center gap-x-8 gap-y-3 text-sm font-semibold">
+            <Link to="/" className="text-white/80 hover:text-white transition-colors">About</Link>
+            <Link to="/" className="text-white/80 hover:text-white transition-colors">Help</Link>
+            <Link to="/" className="text-white/80 hover:text-white transition-colors">Privacy</Link>
+            <Link to="/" className="text-white/80 hover:text-white transition-colors">Terms</Link>
+          </nav>
+        </div>
+        <div className="mt-12 pt-8 border-t border-white/10">
+          <p className="text-xs text-white/50">© 2026 NoteHub. All rights reserved.</p>
+        </div>
+      </div>
     </div>
   </footer>
 );

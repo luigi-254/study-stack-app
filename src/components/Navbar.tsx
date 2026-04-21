@@ -112,8 +112,15 @@ const Navbar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-2 p-1 rounded-full hover:bg-muted transition-colors">
-                  <div className="h-10 w-10 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold border-2 border-primary/20">
-                    {profile?.full_name?.charAt(0) || user.email?.charAt(0).toUpperCase()}
+                  <div className="h-10 w-10 bg-primary rounded-full flex items-center justify-center text-white font-extrabold uppercase text-sm tracking-wide">
+                    {(() => {
+                      const name = profile?.full_name?.trim();
+                      if (name) {
+                        const parts = name.split(/\s+/);
+                        return ((parts[0]?.[0] || "") + (parts[1]?.[0] || "")).toUpperCase() || name[0].toUpperCase();
+                      }
+                      return user.email?.charAt(0).toUpperCase();
+                    })()}
                   </div>
                 </button>
               </DropdownMenuTrigger>
