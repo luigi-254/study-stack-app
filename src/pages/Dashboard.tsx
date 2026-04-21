@@ -48,8 +48,7 @@ const Dashboard = () => {
           .select(`
             id, title, description, file_url, is_published, category_id,
             thumbnail_url,
-            categories(name),
-            profiles(full_name)
+            categories(name)
           `)
           .eq("is_published", true);
         

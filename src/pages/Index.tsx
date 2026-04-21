@@ -37,8 +37,7 @@ const Index = () => {
           .from("notes")
           .select(`
             id, title, description, thumbnail_url,
-            categories(name),
-            profiles(full_name)
+            categories(name)
           `)
           .eq("is_published", true)
           .eq("is_top_pick", true)
@@ -55,8 +54,7 @@ const Index = () => {
           .from("notes")
           .select(`
             id, title, description, thumbnail_url,
-            categories(name),
-            profiles(full_name)
+            categories(name)
           `)
           .eq("is_published", true)
           .order("created_at", { ascending: false })
