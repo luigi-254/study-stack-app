@@ -44,13 +44,13 @@
     --warning-foreground: 0 0% 100%;
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 25 20% 15%;
-    --sidebar-primary: 25 100% 60%;
+    --sidebar-foreground: 0 0% 8%;
+    --sidebar-primary: 14 100% 57%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 25 100% 94%;
-    --sidebar-accent-foreground: 25 100% 45%;
-    --sidebar-border: 35 20% 88%;
-    --sidebar-ring: 25 100% 60%;
+    --sidebar-accent: 28 80% 92%;
+    --sidebar-accent-foreground: 14 100% 45%;
+    --sidebar-border: 28 40% 86%;
+    --sidebar-ring: 14 100% 57%;
 
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }

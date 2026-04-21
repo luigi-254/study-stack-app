@@ -147,7 +147,7 @@ const Navbar = () => {
               <Button variant="ghost" asChild className="font-bold text-sm hidden sm:inline-flex">
                 <Link to="/login">Sign In</Link>
               </Button>
-              <Button asChild className="font-black text-sm px-8 rounded-full shadow-lg hover:scale-105 transition-all shadow-primary/20">
+              <Button variant="accent" asChild className="font-black text-sm px-8 shadow-lg shadow-accent/20">
                 <Link to="/register">Join NoteHub</Link>
               </Button>
             </div>

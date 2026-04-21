@@ -113,10 +113,10 @@ const Index = () => {
                 to help you master your subjects faster.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-                <Button size="lg" asChild className="h-14 px-8 rounded-full text-lg font-bold shadow-xl shadow-primary/20 hover:scale-105 transition-all focus-within:ring-primary">
+                <Button size="lg" variant="accent" asChild className="h-14 px-8 text-lg shadow-xl shadow-accent/20">
                   <Link to="/register">Join the Community</Link>
                 </Button>
-                <Button size="lg" variant="ghost" asChild className="h-14 px-8 rounded-full text-lg font-bold hover:bg-secondary">
+                <Button size="lg" variant="ghost" asChild className="h-14 px-8 text-lg">
                   <Link to="/dashboard">Browse Full Library</Link>
                 </Button>
               </div>
@@ -245,21 +245,21 @@ const Index = () => {
           <div className="container">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
                <div className="space-y-4">
-                 <div className="h-16 w-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
+                 <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
                    <GraduationCap className="h-8 w-8" />
                  </div>
                  <h3 className="text-xl font-bold">Student-Verified</h3>
                  <p className="text-muted-foreground">Every note is reviewed for accuracy and clarity by our community of high-achievers.</p>
                </div>
                <div className="space-y-4">
-                 <div className="h-16 w-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
+                 <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
                    <Sparkles className="h-8 w-8" />
                  </div>
                  <h3 className="text-xl font-bold">Hyper-Focused</h3>
                  <p className="text-muted-foreground">We skip the fluff. Get straight to the concepts you need to know for your exams.</p>
                </div>
                <div className="space-y-4">
-                 <div className="h-16 w-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
+                 <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
                    <BookOpen className="h-8 w-8" />
                  </div>
                  <h3 className="text-xl font-bold">Access Anywhere</h3>
