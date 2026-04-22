@@ -118,7 +118,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Top Picks Section */}
+        {/* Top Picks */}
         <section className="py-16">
           <div className="container">
             <div className="flex items-center justify-between mb-10">
