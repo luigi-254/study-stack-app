@@ -8,7 +8,6 @@ import {
   Sparkles, ChevronRight, BookOpen, GraduationCap, PlusCircle 
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import heroNotehub from "@/assets/hero-notehub.jpg";
 
 interface NoteWithStats {
   id: string;
