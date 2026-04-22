@@ -8,7 +8,6 @@ import {
   Sparkles, ChevronRight, BookOpen, GraduationCap, PlusCircle 
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import heroNotehub from "@/assets/hero-notehub.jpg";
 
 interface NoteWithStats {
   id: string;
@@ -97,7 +96,7 @@ const Index = () => {
         {/* Hero Section - Wattpad style 2-col */}
         <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28">
           <div className="container relative z-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+            <div className="max-w-3xl">
               {/* Left: Headline */}
               <div className="space-y-8 animate-fade-in">
                 <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] text-foreground">
@@ -115,23 +114,12 @@ const Index = () => {
                   </Link>
                 </div>
               </div>
-
-              {/* Right: NoteHub illustrated visual */}
-              <div className="relative aspect-square max-w-md md:max-w-none mx-auto w-full animate-fade-in" style={{ animationDelay: '0.15s' }}>
-                <img
-                  src={heroNotehub}
-                  alt="NoteHub bookshelf illustration shaped as the letters n and h, filled with books and study supplies"
-                  width={1024}
-                  height={1024}
-                  className="w-full h-full object-contain"
-                />
-              </div>
             </div>
           </div>
         </section>
 
         {/* Top Picks Section */}
-        <section className="py-16 bg-secondary/30">
+        <section className="py-16">
           <div className="container">
             <div className="flex items-center justify-between mb-10">
               <div className="flex items-center gap-3">
