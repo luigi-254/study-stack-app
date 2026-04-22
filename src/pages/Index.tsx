@@ -8,6 +8,7 @@ import {
   Sparkles, ChevronRight, BookOpen, GraduationCap, PlusCircle 
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import heroNotehub from "@/assets/hero-notehub.jpg";
 
 interface NoteWithStats {
   id: string;
@@ -115,22 +116,15 @@ const Index = () => {
                 </div>
               </div>
 
-              {/* Right: Soft abstract visual */}
+              {/* Right: NoteHub illustrated visual */}
               <div className="relative aspect-square max-w-md md:max-w-none mx-auto w-full animate-fade-in" style={{ animationDelay: '0.15s' }}>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="absolute w-[80%] h-[80%] rounded-full bg-primary/20 blur-2xl" />
-                  <div className="absolute right-4 top-8 w-48 h-64 md:w-64 md:h-80 rounded-3xl bg-primary shadow-card-hover rotate-6" />
-                  <div className="absolute left-4 bottom-8 w-44 h-60 md:w-60 md:h-72 rounded-3xl bg-foreground shadow-card-hover -rotate-6 flex items-end p-6">
-                    <div className="space-y-2">
-                      <div className="h-2 w-16 rounded-full bg-white/30" />
-                      <div className="h-3 w-28 rounded-full bg-white/60" />
-                      <div className="h-2 w-20 rounded-full bg-white/30" />
-                    </div>
-                  </div>
-                  <div className="relative z-10 w-32 h-32 md:w-40 md:h-40 rounded-full bg-card shadow-card-hover flex items-center justify-center">
-                    <BookOpen className="h-12 w-12 md:h-16 md:w-16 text-primary" />
-                  </div>
-                </div>
+                <img
+                  src={heroNotehub}
+                  alt="NoteHub bookshelf illustration shaped as the letters n and h, filled with books and study supplies"
+                  width={1024}
+                  height={1024}
+                  className="w-full h-full object-contain"
+                />
               </div>
             </div>
           </div>
