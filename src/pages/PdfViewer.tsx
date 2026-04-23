@@ -306,10 +306,9 @@ const PdfViewer = () => {
                <div className="relative bg-white rounded-2xl border shadow-2xl overflow-hidden w-full" style={{ minHeight: '600px', height: '80vh', maxHeight: '1000px' }}>
                   {note?.file_url ? (
                     <iframe
-                      src={`${note.file_url}#toolbar=1&navpanes=0`}
+                      src={`https://docs.google.com/viewer?url=${encodeURIComponent(note.file_url)}&embedded=true`}
                       className="w-full h-full border-none"
                       title={note.title}
-                      allow="fullscreen"
                     />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground p-12">
