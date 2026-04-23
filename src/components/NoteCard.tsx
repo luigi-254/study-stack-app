@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Heart, MessageCircle, User } from "lucide-react";
+import { Eye, Heart, MessageCircle, User, Bookmark, CheckCircle2, Download } from "lucide-react";
 import { getNoteCoverImage } from "@/lib/imageUtils";
+import { useState } from "react";
+
+import { useAuth } from "@/contexts/AuthContext";
 
 interface NoteCardProps {
   id: string;
@@ -14,31 +17,59 @@ interface NoteCardProps {
   likes?: number;
   comments?: number;
   thumbnail?: string | null;
+  isCompleted?: boolean;
+  isBookmarked?: boolean;
+  isDownloaded?: boolean;
 }
 
 const NoteCard = ({ 
   id, title, description, category, author = "Anonymous", 
-  views = 0, likes = 0, comments = 0, thumbnail
+  views = 0, likes = 0, comments = 0, thumbnail,
+  isCompleted = false, isBookmarked = false, isDownloaded = false
 }: NoteCardProps) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const { user } = useAuth();
   const coverImage = thumbnail || getNoteCoverImage(category);
 
   return (
-    <Link to={`/viewer/${id}`} className="block group">
+    <Link to={user ? `/viewer/${id}` : "/login"} className="block group">
       <Card className="overflow-hidden border-none shadow-card hover:shadow-card-hover transition-all duration-300 h-full flex flex-col bg-card">
-        <div className="relative aspect-[4/3] overflow-hidden">
+        <div className="relative aspect-[3/2] overflow-hidden bg-muted">
           <img 
             src={coverImage} 
             alt={title}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            loading="lazy"
+            onLoad={() => setImageLoaded(true)}
+            className={`w-full h-full object-cover group-hover:scale-110 transition-all duration-500 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
           />
+          
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
              <Badge className="bg-primary text-white border-none">
                Read Now
              </Badge>
           </div>
+
           <Badge className="absolute top-3 left-3 bg-white/90 text-black backdrop-blur-md border-none font-bold text-[10px] uppercase tracking-wider">
             {category}
           </Badge>
+
+          <div className="absolute top-3 right-3 flex flex-col gap-2">
+            {isBookmarked && (
+              <div className="h-7 w-7 bg-primary text-white rounded-full flex items-center justify-center shadow-lg animate-fade-in">
+                <Bookmark className="h-3.5 w-3.5 fill-white" />
+              </div>
+            )}
+            {isCompleted && (
+              <div className="h-7 w-7 bg-green-500 text-white rounded-full flex items-center justify-center shadow-lg animate-fade-in">
+                <CheckCircle2 className="h-3.5 w-3.5" />
+              </div>
+            )}
+            {isDownloaded && (
+              <div className="h-7 w-7 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg animate-fade-in">
+                <Download className="h-3.5 w-3.5" />
+              </div>
+            )}
+          </div>
         </div>
         
         <CardContent className="p-5 flex flex-col flex-1">
@@ -70,6 +101,14 @@ const NoteCard = ({
                 <MessageCircle className="h-3.5 w-3.5" />
                 <span className="text-xs font-semibold">{comments}</span>
               </div>
+            </div>
+            
+            <div className="flex gap-1.5 items-center">
+              {isBookmarked && <span className="text-[10px] font-bold text-primary uppercase">Saved</span>}
+              {isBookmarked && (isCompleted || isDownloaded) && <span className="text-[10px] text-muted-foreground">•</span>}
+              {isCompleted && <span className="text-[10px] font-bold text-green-500 uppercase">Read</span>}
+              {isCompleted && isDownloaded && <span className="text-[10px] text-muted-foreground">•</span>}
+              {isDownloaded && <span className="text-[10px] font-bold text-blue-500 uppercase">Offline</span>}
             </div>
           </div>
         </CardContent>

@@ -276,7 +276,16 @@ const PdfViewer = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56 rounded-xl shadow-xl border-none p-2 space-y-1">
                     <DropdownMenuItem className="rounded-lg py-3 cursor-pointer font-bold focus:bg-primary/5 focus:text-primary transition-colors" asChild>
-                       <a href={note?.file_url} target="_blank" rel="noopener noreferrer">
+                       <a 
+                         href={note?.file_url} 
+                         target="_blank" 
+                         rel="noopener noreferrer"
+                         onClick={async () => {
+                           if (user && note) {
+                             await supabase.from("downloads").insert({ user_id: user.id, note_id: note.id }).maybeSingle();
+                           }
+                         }}
+                       >
                          <Download className="h-4 w-4 mr-2 text-primary" /> Download PDF
                        </a>
                     </DropdownMenuItem>

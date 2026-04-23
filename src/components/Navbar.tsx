@@ -93,21 +93,6 @@ const Navbar = () => {
         </form>
 
         <div className="flex items-center gap-2 sm:gap-4">
-          {user && (
-            <>
-              <Button variant="ghost" className="hidden lg:flex items-center gap-2 font-bold hover:text-primary" asChild>
-                <Link to="/admin">
-                  <LayoutDashboard className="h-4 w-4" /> Control Center
-                </Link>
-              </Button>
-              <Button variant="default" className="hidden sm:flex items-center gap-2 font-black px-6 rounded-full shadow-lg hover:scale-105 transition-all" asChild>
-                 <Link to="/admin">
-                   <PlusCircle className="h-5 w-5" /> Publish
-                 </Link>
-              </Button>
-            </>
-          )}
-
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -137,11 +122,6 @@ const Navbar = () => {
                 <DropdownMenuItem asChild className="rounded-lg py-2.5 font-bold cursor-pointer transition-colors">
                   <Link to="/dashboard?view=completed" className="flex items-center gap-2">
                     <BookMarked className="h-4 w-4 text-primary" /> My Library
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild className="rounded-lg py-2.5 font-bold cursor-pointer transition-colors">
-                  <Link to="/admin" className="flex items-center gap-2">
-                    <Settings className="h-4 w-4 text-primary" /> Admin Settings
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleSignOut} className="rounded-lg py-2.5 font-bold cursor-pointer text-destructive focus:text-destructive flex items-center gap-2">

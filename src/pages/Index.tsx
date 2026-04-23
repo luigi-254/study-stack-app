@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
+import { useAuth } from "@/contexts/AuthContext";
+
 interface NoteWithStats {
   id: string;
   title: string;
@@ -24,6 +26,7 @@ const Index = () => {
   const [recentNotes, setRecentNotes] = useState<NoteWithStats[]>([]);
   const [categories, setCategories] = useState<{ name: string; count: number }[]>([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -106,10 +109,12 @@ const Index = () => {
                   Skip the noise. Explore hand-picked, high-impact notes to help you master your subjects faster.
                 </p>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-                  <Button size="lg" asChild className="h-14 px-10 text-base bg-foreground text-background hover:bg-foreground/90 w-full sm:w-auto">
-                    <Link to="/register">Join the Community</Link>
-                  </Button>
-                  <Link to="/dashboard" className="text-base font-bold text-foreground hover:text-primary transition-colors text-center sm:text-left underline-offset-4 hover:underline">
+                  {!user && (
+                    <Button size="lg" asChild className="h-14 px-10 text-base bg-foreground text-background hover:bg-foreground/90 w-full sm:w-auto">
+                      <Link to="/register">Join the Community</Link>
+                    </Button>
+                  )}
+                  <Link to={user ? "/dashboard" : "/login"} className="text-base font-bold text-foreground hover:text-primary transition-colors text-center sm:text-left underline-offset-4 hover:underline">
                     Browse Full Library →
                   </Link>
                 </div>
@@ -132,14 +137,14 @@ const Index = () => {
                 </div>
               </div>
               <Button variant="ghost" className="hidden sm:flex items-center gap-1 font-bold group" asChild>
-                <Link to="/dashboard">Explore All <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></Link>
+                <Link to={user ? "/dashboard" : "/login"}>Explore All <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" /></Link>
               </Button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
               {loading ? (
                 Array(4).fill(0).map((_, i) => (
-                  <div key={i} className="aspect-[3/4] rounded-2xl bg-muted animate-pulse" />
+                  <div key={i} className="aspect-[3/2] rounded-2xl bg-muted animate-pulse" />
                 ))
               ) : topPicks.length > 0 ? (
                 topPicks.map((note) => (
@@ -175,7 +180,7 @@ const Index = () => {
               {categories.map((cat) => (
                 <Link 
                   key={cat.name} 
-                  to={`/dashboard?category=${encodeURIComponent(cat.name)}`}
+                  to={user ? `/dashboard?category=${encodeURIComponent(cat.name)}` : "/login"}
                   className="group relative h-40 overflow-hidden rounded-2xl bg-secondary flex flex-col items-center justify-center transition-all hover:-translate-y-2 hover:bg-primary/5"
                 >
                   <div className="h-12 w-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-3 group-hover:bg-primary group-hover:text-white transition-colors">
@@ -186,7 +191,7 @@ const Index = () => {
                 </Link>
               ))}
               <Link 
-                to="/dashboard"
+                to={user ? "/dashboard" : "/login"}
                 className="group relative h-40 overflow-hidden rounded-2xl border-2 border-dashed border-muted-foreground/20 flex flex-col items-center justify-center transition-all hover:border-primary/50 hover:bg-primary/5"
               >
                 <div className="h-12 w-12 bg-muted rounded-xl flex items-center justify-center mb-3 group-hover:bg-primary group-hover:text-white transition-colors">

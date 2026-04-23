@@ -31,6 +31,8 @@ const Dashboard = () => {
   const [search, setSearch] = useState("");
   const [notes, setNotes] = useState<NoteWithCategory[]>([]);
   const [progress, setProgress] = useState<Record<string, boolean>>({});
+  const [bookmarks, setBookmarks] = useState<Record<string, boolean>>({});
+  const [downloads, setDownloads] = useState<Record<string, boolean>>({});
   const [loadingNotes, setLoadingNotes] = useState(true);
   const [currentView, setCurrentView] = useState("notes");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -47,7 +49,7 @@ const Dashboard = () => {
           .from("notes")
           .select(`
             id, title, description, file_url, is_published, category_id,
-            thumbnail_url,
+            thumbnail_url, views_count,
             categories(name)
           `)
           .eq("is_published", true);
@@ -59,21 +61,48 @@ const Dashboard = () => {
       setLoadingNotes(false);
     };
 
-    const fetchProgress = async () => {
+    const fetchUserData = async () => {
       if (!user) return;
-      const { data } = await supabase
+      
+      // Fetch Progress
+      const { data: progData } = await supabase
         .from("user_note_progress")
         .select("note_id, completed")
         .eq("user_id", user.id);
-      if (data) {
+      
+      if (progData) {
         const map: Record<string, boolean> = {};
-        data.forEach((p) => { map[p.note_id] = p.completed; });
+        progData.forEach((p) => { map[p.note_id] = p.completed; });
         setProgress(map);
+      }
+
+      // Fetch Bookmarks
+      const { data: bmarkData } = await supabase
+        .from("bookmarks")
+        .select("note_id")
+        .eq("user_id", user.id);
+      
+      if (bmarkData) {
+        const bMap: Record<string, boolean> = {};
+        bmarkData.forEach((b) => { bMap[b.note_id] = true; });
+        setBookmarks(bMap);
+      }
+
+      // Fetch Downloads
+      const { data: dData } = await supabase
+        .from("downloads")
+        .select("note_id")
+        .eq("user_id", user.id);
+      
+      if (dData) {
+        const dMap: Record<string, boolean> = {};
+        dData.forEach((d) => { dMap[d.note_id] = true; });
+        setDownloads(dMap);
       }
     };
 
     fetchData();
-    fetchProgress();
+    fetchUserData();
   }, [user]);
 
   useEffect(() => {
@@ -103,7 +132,7 @@ const Dashboard = () => {
                          (n.categories?.name || "").toLowerCase().includes(search.toLowerCase());
     
     if (currentView === "completed") {
-      return matchesSearch && (progress[n.id] ?? false);
+      return matchesSearch && (progress[n.id] || bookmarks[n.id] || downloads[n.id]);
     }
     
     if (selectedCategory && currentView === "notes") {
@@ -140,12 +169,12 @@ const Dashboard = () => {
                     <CheckCircle2 className="h-4 w-4" /> My Library
                   </button>
                   <button 
-                    onClick={() => navigate("/admin")}
+                    onClick={() => window.dispatchEvent(new CustomEvent('open-ai-assistant'))}
                     className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-muted-foreground hover:bg-secondary hover:text-foreground transition-all"
                   >
-                    <PlusCircle className="h-4 w-4" /> Write Note
+                    <MessageSquare className="h-4 w-4" /> Support
                   </button>
-               </nav>
+                </nav>
             </div>
 
             <div className="space-y-4">
@@ -162,23 +191,23 @@ const Dashboard = () => {
                   ))}
                </div>
             </div>
-
-            <div className="p-6 rounded-2xl bg-primary/5 border border-primary/10 space-y-4">
-               <div className="h-10 w-10 bg-primary/20 rounded-full flex items-center justify-center">
-                 <MessageSquare className="h-5 w-5 text-primary" />
-               </div>
-               <h4 className="font-bold text-sm">Need Help?</h4>
-               <p className="text-xs text-muted-foreground leading-relaxed">
-                 Having trouble finding a specific note or want to request a new subject? Our community is here to help!
-               </p>
-               <Button variant="outline" className="w-full text-xs font-bold rounded-full border-primary/20 hover:bg-primary/5">
-                 Join Support Chat
-               </Button>
-            </div>
           </aside>
 
           {/* Main Dashboard Area */}
           <main className="lg:col-span-3 space-y-8">
+            {/* User Profile Header */}
+            {user && (
+              <div className="flex items-center gap-6 p-8 rounded-[2rem] bg-gradient-to-r from-primary to-primary/80 text-white shadow-2xl shadow-primary/20 animate-fade-in mb-4">
+                <div className="h-20 w-20 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-3xl font-black shadow-inner border border-white/30">
+                  {profile?.full_name?.trim().split(/\s+/).map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || user.email?.[0].toUpperCase()}
+                </div>
+                <div className="space-y-1">
+                  <h2 className="text-2xl font-black tracking-tight leading-none">Welcome back, {profile?.full_name || 'NoteHub Member'}!</h2>
+                  <p className="text-white/70 text-sm font-medium">Keep mastering your skills. You've read {Object.keys(progress).filter(k => progress[k]).length} notes so far.</p>
+                </div>
+              </div>
+            )}
+
             <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                <div>
                   <h1 className="text-3xl font-black">
@@ -219,24 +248,38 @@ const Dashboard = () => {
             )}
 
             {loadingNotes ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                 {[1, 2, 3, 4, 5, 6].map(i => (
-                  <div key={i} className="aspect-[3/4] rounded-2xl bg-muted animate-pulse" />
+                  <div key={i} className="aspect-[3/2] rounded-2xl bg-muted animate-pulse" />
                 ))}
               </div>
             ) : filtered.length === 0 ? (
-              <div className="py-20 text-center space-y-4">
-                 <div className="h-20 w-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Search className="h-10 w-10 text-muted-foreground/30" />
+              <div className="py-24 text-center space-y-6 animate-fade-in">
+                 <div className="h-28 w-28 bg-muted/50 rounded-[2.5rem] flex items-center justify-center mx-auto mb-6 transform -rotate-12 hover:rotate-0 transition-transform duration-500">
+                    <FolderOpen className="h-14 w-14 text-muted-foreground/20" />
                  </div>
-                 <h3 className="text-xl font-bold">No notes found</h3>
-                 <p className="text-muted-foreground">Try adjusting your search or filters to find what you're looking for.</p>
-                 <Button variant="outline" onClick={() => { setSearch(""); setSelectedCategory(null); }} className="rounded-full">
-                   Clear all filters
-                 </Button>
+                 {currentView === "completed" ? (
+                   <>
+                     <h3 className="text-3xl font-black text-foreground">Your library is waiting...</h3>
+                     <p className="text-muted-foreground max-w-sm mx-auto leading-relaxed">
+                       You haven't saved or completed any notes yet. Start exploring our vast collection to build your personal library.
+                     </p>
+                     <Button size="lg" variant="default" onClick={() => { setCurrentView("notes"); setSelectedCategory(null); }} className="rounded-full px-12 h-14 font-black shadow-xl hover:scale-105 transition-all text-base">
+                       Start Reading Now
+                     </Button>
+                   </>
+                 ) : (
+                   <>
+                     <h3 className="text-2xl font-bold">No results matched</h3>
+                     <p className="text-muted-foreground">Try adjusting your search or filters to find what you're looking for.</p>
+                     <Button variant="outline" onClick={() => { setSearch(""); setSelectedCategory(null); }} className="rounded-full px-8">
+                       Clear all filters
+                     </Button>
+                   </>
+                 )}
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                 {filtered.map((note) => (
                   <NoteCard 
                     key={note.id}
@@ -247,6 +290,9 @@ const Dashboard = () => {
                     author={note.profiles?.full_name || "NoteHub Author"}
                     views={note.views_count}
                     thumbnail={note.thumbnail_url}
+                    isCompleted={progress[note.id]}
+                    isBookmarked={bookmarks[note.id]}
+                    isDownloaded={downloads[note.id]}
                   />
                 ))}
               </div>
