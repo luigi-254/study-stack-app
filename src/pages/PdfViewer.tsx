@@ -185,9 +185,6 @@ const PdfViewer = () => {
           
           {/* Main Content Area */}
           <div className="lg:col-span-8 space-y-8">
-            <Link to="/dashboard" className="inline-flex items-center text-sm font-bold text-muted-foreground hover:text-primary transition-colors mb-4 group">
-              <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" /> Back to Library
-            </Link>
 
             {/* Note Header Info */}
             <div className="space-y-6">
