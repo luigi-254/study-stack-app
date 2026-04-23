@@ -16,6 +16,27 @@ const UpdatePassword = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const handleGeneratePassword = () => {
+    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+    let generated = "";
+    for (let i = 0; i < 16; i++) {
+        generated += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    
+    // Ensure at least one uppercase, lowercase, number, and special character
+    if (!/[A-Z]/.test(generated) || !/[a-z]/.test(generated) || !/\d/.test(generated) || !/[!@#$%^&*]/.test(generated)) {
+        return handleGeneratePassword();
+    }
+
+    setPassword(generated);
+    setConfirm(generated);
+    navigator.clipboard.writeText(generated);
+    toast({ 
+        title: "Password Generated", 
+        description: "A secure password has been filled and copied to your clipboard." 
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirm) {
@@ -49,7 +70,17 @@ const UpdatePassword = () => {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="password">New Password</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">New Password</Label>
+                <Button 
+                  type="button" 
+                  variant="link" 
+                  className="p-0 h-auto text-xs text-primary font-medium" 
+                  onClick={handleGeneratePassword}
+                >
+                  Generate strong password
+                </Button>
+              </div>
               <div className="relative">
                 <Input 
                   id="password" 
