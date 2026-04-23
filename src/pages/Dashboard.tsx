@@ -195,18 +195,6 @@ const Dashboard = () => {
 
           {/* Main Dashboard Area */}
           <main className="lg:col-span-3 space-y-8">
-            {/* User Profile Header */}
-            {user && (
-              <div className="flex items-center gap-6 p-8 rounded-[2rem] bg-gradient-to-r from-primary to-primary/80 text-white shadow-2xl shadow-primary/20 animate-fade-in mb-4">
-                <div className="h-20 w-20 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-3xl font-black shadow-inner border border-white/30">
-                  {profile?.full_name?.trim().split(/\s+/).map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) || user.email?.[0].toUpperCase()}
-                </div>
-                <div className="space-y-1">
-                  <h2 className="text-2xl font-black tracking-tight leading-none">Welcome back, {profile?.full_name || 'NoteHub Member'}!</h2>
-                  <p className="text-white/70 text-sm font-medium">Keep mastering your skills. You've read {Object.keys(progress).filter(k => progress[k]).length} notes so far.</p>
-                </div>
-              </div>
-            )}
 
             <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                <div>

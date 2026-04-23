@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { 
   BookOpen, Menu, X, LogOut, ChevronDown, 
-  Search, PlusCircle, User, BookMarked, Settings, LayoutDashboard 
+  Search, PlusCircle, User, BookMarked, Settings, LayoutDashboard,
+  ArrowLeft
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -21,6 +22,9 @@ const Navbar = () => {
   const [search, setSearch] = useState("");
   const { user, profile, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const showBackButton = location.pathname !== "/";
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -57,7 +61,16 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-card h-18">
       <div className="container flex h-full items-center justify-between py-3 gap-4">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 sm:gap-6">
+          {showBackButton && (
+            <button 
+              onClick={() => navigate(-1)} 
+              className="h-8 w-8 rounded-full bg-secondary hover:bg-primary hover:text-white flex items-center justify-center transition-all shadow-sm"
+              title="Go Back"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+          )}
           <Logo />
           
           <DropdownMenu>

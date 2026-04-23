@@ -1,6 +1,5 @@
-
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { 
   Sparkles, X, MessageSquare, ChevronRight, 
   Search, BookOpen, Library, LogOut, Send 
@@ -14,7 +13,13 @@ const AIAssistant = () => {
   const [input, setInput] = useState("");
   const { user, profile } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const chatEndRef = useRef<HTMLDivElement>(null);
+
+  const hiddenRoutes = ["/", "/login", "/register"];
+  if (hiddenRoutes.includes(location.pathname)) {
+    return null;
+  }
 
   const nicknames = ["Knowledge Seeker", "Scholar", "Bookworm", "Inquisitive Mind", "Academic Explorer", "Lifelong Learner"];
   const randomNickname = nicknames[Math.floor(Math.random() * nicknames.length)];
