@@ -149,53 +149,10 @@ const Dashboard = () => {
       <Navbar />
 
       <div className="flex-1 container py-8 md:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="flex flex-col lg:grid lg:grid-cols-4 gap-8">
           
-          {/* Sidebar Filters */}
-          <aside className="lg:col-span-1 space-y-8">
-            <div className="space-y-4">
-               <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Quick Filters</h3>
-               <nav className="flex flex-col gap-1">
-                  <button 
-                    onClick={() => { setCurrentView("notes"); setSelectedCategory(null); }}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${currentView === "notes" && !selectedCategory ? "bg-primary text-white shadow-lg shadow-primary/20" : "hover:bg-secondary text-muted-foreground hover:text-foreground"}`}
-                  >
-                    <FileText className="h-4 w-4" /> All Notes
-                  </button>
-                  <button 
-                    onClick={() => { setCurrentView("completed"); setSelectedCategory(null); }}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${currentView === "completed" ? "bg-primary text-white shadow-lg shadow-primary/20" : "hover:bg-secondary text-muted-foreground hover:text-foreground"}`}
-                  >
-                    <CheckCircle2 className="h-4 w-4" /> My Library
-                  </button>
-                  <button 
-                    onClick={() => window.dispatchEvent(new CustomEvent('open-ai-assistant'))}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-muted-foreground hover:bg-secondary hover:text-foreground transition-all"
-                  >
-                    <MessageSquare className="h-4 w-4" /> Support
-                  </button>
-                </nav>
-            </div>
-
-            <div className="space-y-4">
-               <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Categories</h3>
-               <div className="flex flex-wrap lg:flex-col gap-2">
-                  {uniqueCategories.map(cat => (
-                    <button 
-                      key={cat}
-                      onClick={() => { setSelectedCategory(cat); setCurrentView("notes"); }}
-                      className={`px-4 py-2 rounded-full lg:rounded-xl text-xs font-bold border transition-all ${selectedCategory === cat ? "bg-primary/10 border-primary text-primary" : "border-border hover:border-primary/50 text-muted-foreground"}`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-               </div>
-            </div>
-          </aside>
-
-          {/* Main Dashboard Area */}
-          <main className="lg:col-span-3 space-y-8">
-
+          {/* Main Dashboard Area (Moved up for mobile) */}
+          <main className="order-1 lg:order-2 lg:col-span-3 space-y-8">
             <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                <div>
                   <h1 className="text-3xl font-black">
@@ -286,6 +243,48 @@ const Dashboard = () => {
               </div>
             )}
           </main>
+
+          {/* Sidebar (Moved down for mobile) */}
+          <aside className="order-2 lg:order-1 lg:col-span-1 space-y-8">
+            <div className="space-y-4">
+               <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Quick Filters</h3>
+               <nav className="flex flex-col gap-1">
+                  <button 
+                    onClick={() => { setCurrentView("notes"); setSelectedCategory(null); }}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${currentView === "notes" && !selectedCategory ? "bg-primary text-white shadow-lg shadow-primary/20" : "hover:bg-secondary text-muted-foreground hover:text-foreground"}`}
+                  >
+                    <FileText className="h-4 w-4" /> All Notes
+                  </button>
+                  <button 
+                    onClick={() => { setCurrentView("completed"); setSelectedCategory(null); }}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${currentView === "completed" ? "bg-primary text-white shadow-lg shadow-primary/20" : "hover:bg-secondary text-muted-foreground hover:text-foreground"}`}
+                  >
+                    <CheckCircle2 className="h-4 w-4" /> My Library
+                  </button>
+                  <button 
+                    onClick={() => window.dispatchEvent(new CustomEvent('open-ai-assistant'))}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-muted-foreground hover:bg-secondary hover:text-foreground transition-all"
+                  >
+                    <MessageSquare className="h-4 w-4" /> Support
+                  </button>
+                </nav>
+            </div>
+
+            <div className="space-y-4">
+               <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Categories</h3>
+               <div className="grid grid-cols-2 lg:flex lg:flex-col gap-2">
+                  {uniqueCategories.map(cat => (
+                    <button 
+                      key={cat}
+                      onClick={() => { setSelectedCategory(cat); setCurrentView("notes"); }}
+                      className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all ${selectedCategory === cat ? "bg-primary/10 border-primary text-primary" : "border-border hover:border-primary/50 text-muted-foreground"}`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+               </div>
+            </div>
+          </aside>
         </div>
       </div>
     </div>

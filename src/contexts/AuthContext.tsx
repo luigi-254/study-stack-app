@@ -33,11 +33,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
+    // Session heartbeat to ensure state is absolutely sync'd
+    const initSession = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        setSession(session);
+        setUser(session?.user ?? null);
+        if (session?.user) await fetchProfile(session.user.id);
+      } catch (err) {
+        console.error("Auth init failed:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
+      
       if (session?.user) {
-        setTimeout(() => fetchProfile(session.user.id), 0);
+        fetchProfile(session.user.id);
       } else {
         setProfile(null);
       }
@@ -46,15 +61,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         navigate("/update-password");
       }
       
-      setLoading(false);
+      // Ensure specific events force the loading off
+      if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
+        setLoading(false);
+      }
     });
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) fetchProfile(session.user.id);
-      setLoading(false);
-    });
+    initSession();
 
     return () => subscription.unsubscribe();
   }, [navigate]);
