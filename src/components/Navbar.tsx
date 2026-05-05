@@ -49,13 +49,14 @@ const Navbar = () => {
   };
 
   const Logo = () => (
-    <Link to="/" className="flex items-center gap-2 group">
-      <div className="bg-primary p-1.5 rounded-lg group-hover:rotate-12 transition-transform duration-300 shadow-lg shadow-primary/20">
-        <BookOpen className="h-6 w-6 text-white" />
-      </div>
-      <span className="font-extrabold text-2xl tracking-tighter hidden sm:block">
-        Study<span className="text-primary italic">Stack</span>
-      </span>
+    <Link to="/" className="flex items-center group">
+      <img
+        src="/logo.png"
+        alt="Study Stack logo"
+        width={160}
+        height={160}
+        className="h-10 w-auto group-hover:scale-105 transition-transform duration-300"
+      />
     </Link>
   );
 
