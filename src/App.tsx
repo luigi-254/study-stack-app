@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard.tsx";
 import PdfViewer from "./pages/PdfViewer.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
 import UpdatePassword from "./pages/UpdatePassword.tsx";
+import Install from "./pages/Install.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 import { ThemeProvider } from "@/components/theme-provider";
@@ -35,6 +36,7 @@ const App = () => (
               <Route path="/viewer/:id" element={<PdfViewer />} />
               <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
               <Route path="/update-password" element={<UpdatePassword />} />
+              <Route path="/install" element={<Install />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthProvider>
