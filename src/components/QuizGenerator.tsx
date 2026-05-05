@@ -12,7 +12,8 @@ import { AIService, QuizQuestion } from "@/lib/AIService";
 import { Brain, CheckCircle2, XCircle, ArrowRight, Loader2, RefreshCcw } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase as supabaseClient } from "@/integrations/supabase/client";
+const supabase = supabaseClient as any;
 import { useAuth } from "@/contexts/AuthContext";
 
 interface QuizGeneratorProps {

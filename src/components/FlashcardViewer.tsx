@@ -11,7 +11,8 @@ import {
 import { AIService, Flashcard } from "@/lib/AIService";
 import { BookOpen, ChevronLeft, ChevronRight, Loader2, RefreshCcw, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase as supabaseClient } from "@/integrations/supabase/client";
+const supabase = supabaseClient as any;
 import { useAuth } from "@/contexts/AuthContext";
 
 interface FlashcardViewerProps {
