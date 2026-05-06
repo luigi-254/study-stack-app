@@ -119,74 +119,94 @@ const Dashboard = () => {
   const uniqueCategories = Array.from(new Set(notes.map(n => n.categories?.name).filter(Boolean))) as string[];
   const recentNotes = notes.slice(0, 3); // Mocking recent for now
 
+  const SidebarBlock = ({ onNavigate }: { onNavigate?: () => void }) => (
+    <div className="space-y-8">
+      <div className="space-y-4">
+        <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Learning Hub</h3>
+        <nav className="flex flex-col gap-1">
+          <button
+            onClick={() => { setCurrentView("today"); setSelectedCategory(null); onNavigate?.(); }}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${currentView === "today" ? "bg-primary text-white shadow-lg shadow-primary/20" : "hover:bg-secondary text-muted-foreground hover:text-foreground"}`}
+          >
+            <LayoutDashboard className="h-4 w-4" /> Today's View
+          </button>
+          <button
+            onClick={() => { setCurrentView("notes"); setSelectedCategory(null); onNavigate?.(); }}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${currentView === "notes" && !selectedCategory ? "bg-primary text-white shadow-lg shadow-primary/20" : "hover:bg-secondary text-muted-foreground hover:text-foreground"}`}
+          >
+            <FileText className="h-4 w-4" /> Browse Library
+          </button>
+          <button
+            onClick={() => { setCurrentView("completed"); setSelectedCategory(null); onNavigate?.(); }}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${currentView === "completed" ? "bg-primary text-white shadow-lg shadow-primary/20" : "hover:bg-secondary text-muted-foreground hover:text-foreground"}`}
+          >
+            <CheckCircle2 className="h-4 w-4" /> My Finished Notes
+          </button>
+          {isAdmin && (
+            <button
+              onClick={() => { navigate("/admin"); onNavigate?.(); }}
+              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-muted-foreground hover:bg-secondary hover:text-foreground transition-all"
+            >
+              <PlusCircle className="h-4 w-4" /> Admin Panel
+            </button>
+          )}
+        </nav>
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Subjects</h3>
+        <div className="flex flex-wrap gap-2">
+          {uniqueCategories.map(cat => (
+            <button
+              key={cat}
+              onClick={() => { setSelectedCategory(cat); setCurrentView("notes"); onNavigate?.(); }}
+              className={`px-4 py-2 rounded-full text-xs font-bold border transition-all ${selectedCategory === cat && currentView === "notes" ? "bg-primary/10 border-primary text-primary" : "border-border hover:border-primary/50 text-muted-foreground"}`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="p-6 rounded-2xl bg-primary/5 border border-primary/10 space-y-4">
+        <div className="h-10 w-10 bg-primary/20 rounded-full flex items-center justify-center">
+          <Sparkles className="h-5 w-5 text-primary" />
+        </div>
+        <h4 className="font-bold text-sm">AI Study Partner</h4>
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          Need a quick summary or a practice quiz? Our AI is ready to help you master any topic in seconds.
+        </p>
+        <Button variant="outline" className="w-full text-xs font-bold rounded-full border-primary/20 hover:bg-primary/5">
+          Ask AI Anything
+        </Button>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
 
-      <div className="flex-1 container py-8 md:py-12">
+      <div className="flex-1 container py-6 md:py-12 px-4 md:px-6">
+        {/* Mobile menu trigger */}
+        <div className="lg:hidden mb-4">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" className="rounded-full font-bold gap-2">
+                <Menu className="h-4 w-4" /> Menu & Subjects
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[85vw] max-w-sm overflow-y-auto p-6">
+              <SidebarBlock />
+            </SheetContent>
+          </Sheet>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          
-          {/* Sidebar Navigation */}
-          <aside className="lg:col-span-1 space-y-8">
-            <div className="space-y-4">
-               <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Learning Hub</h3>
-               <nav className="flex flex-col gap-1">
-                  <button 
-                    onClick={() => { setCurrentView("today"); setSelectedCategory(null); }}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${currentView === "today" ? "bg-primary text-white shadow-lg shadow-primary/20" : "hover:bg-secondary text-muted-foreground hover:text-foreground"}`}
-                  >
-                    <LayoutDashboard className="h-4 w-4" /> Today's View
-                  </button>
-                  <button 
-                    onClick={() => { setCurrentView("notes"); setSelectedCategory(null); }}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${currentView === "notes" && !selectedCategory ? "bg-primary text-white shadow-lg shadow-primary/20" : "hover:bg-secondary text-muted-foreground hover:text-foreground"}`}
-                  >
-                    <FileText className="h-4 w-4" /> Browse Library
-                  </button>
-                  <button 
-                    onClick={() => { setCurrentView("completed"); setSelectedCategory(null); }}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${currentView === "completed" ? "bg-primary text-white shadow-lg shadow-primary/20" : "hover:bg-secondary text-muted-foreground hover:text-foreground"}`}
-                  >
-                    <CheckCircle2 className="h-4 w-4" /> My Finished Notes
-                  </button>
-                  {isAdmin && (
-                    <button 
-                      onClick={() => navigate("/admin")}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-muted-foreground hover:bg-secondary hover:text-foreground transition-all"
-                    >
-                      <PlusCircle className="h-4 w-4" /> Admin Panel
-                    </button>
-                  )}
-               </nav>
-            </div>
 
-            <div className="space-y-4">
-               <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Subjects</h3>
-               <div className="flex flex-wrap lg:flex-col gap-2">
-                  {uniqueCategories.map(cat => (
-                    <button 
-                      key={cat}
-                      onClick={() => { setSelectedCategory(cat); setCurrentView("notes"); }}
-                      className={`px-4 py-2 rounded-full lg:rounded-xl text-xs font-bold border transition-all ${selectedCategory === cat && currentView === "notes" ? "bg-primary/10 border-primary text-primary" : "border-border hover:border-primary/50 text-muted-foreground"}`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-               </div>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-primary/5 border border-primary/10 space-y-4">
-               <div className="h-10 w-10 bg-primary/20 rounded-full flex items-center justify-center">
-                 <Sparkles className="h-5 w-5 text-primary" />
-               </div>
-               <h4 className="font-bold text-sm">AI Study Partner</h4>
-               <p className="text-xs text-muted-foreground leading-relaxed">
-                 Need a quick summary or a practice quiz? Our AI is ready to help you master any topic in seconds.
-               </p>
-               <Button variant="outline" className="w-full text-xs font-bold rounded-full border-primary/20 hover:bg-primary/5">
-                 Ask AI Anything
-               </Button>
-            </div>
+          {/* Sidebar (desktop) */}
+          <aside className="hidden lg:block lg:col-span-1">
+            <SidebarBlock />
           </aside>
 
           {/* Main Content Area */}
