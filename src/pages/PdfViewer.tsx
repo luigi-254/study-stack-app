@@ -315,7 +315,7 @@ const PdfViewer = () => {
           </div>
 
           {/* Sidebar / Info Area */}
-          <div className="lg:col-span-4 space-y-10">
+          <div className="lg:col-span-4 space-y-6 md:space-y-10">
             <AISummary 
               noteTitle={note?.title || ""} 
               noteDescription={note?.description || ""} 
