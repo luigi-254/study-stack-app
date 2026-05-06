@@ -174,7 +174,7 @@ const PdfViewer = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           
           {/* Main Content Area */}
-          <div className="lg:col-span-8 space-y-8">
+          <div className="lg:col-span-8 space-y-6 md:space-y-8">
             <Link to="/dashboard" className="inline-flex items-center text-sm font-black text-muted-foreground hover:text-primary transition-colors mb-4 group uppercase tracking-widest">
               <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" /> Back to Library
             </Link>
