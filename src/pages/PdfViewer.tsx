@@ -290,7 +290,7 @@ const PdfViewer = () => {
             {/* The Reader Container */}
             <div className="relative group">
                <div className="absolute -inset-1 bg-gradient-to-r from-primary/10 to-orange-500/10 rounded-2xl blur-xl opacity-50"></div>
-               <div className="relative bg-white dark:bg-card rounded-2xl border shadow-2xl overflow-hidden w-full" style={{ minHeight: '600px', height: '85vh', maxHeight: '1200px' }}>
+               <div className="relative bg-white dark:bg-card rounded-2xl border shadow-2xl overflow-hidden w-full h-[70vh] sm:h-[80vh] min-h-[500px] max-h-[1200px]">
                   {note?.file_url ? (
                     <iframe
                       src={`${note.file_url}#toolbar=1&navpanes=0`}
