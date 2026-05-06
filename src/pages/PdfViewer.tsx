@@ -170,8 +170,8 @@ const PdfViewer = () => {
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
       
-      <main className="flex-1 container py-8 md:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <main className="flex-1 container py-6 md:py-12 px-4 md:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           
           {/* Main Content Area */}
           <div className="lg:col-span-8 space-y-8">
