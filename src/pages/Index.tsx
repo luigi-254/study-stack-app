@@ -95,33 +95,33 @@ const Index = () => {
         {/* Hero Section */}
         <section className="relative overflow-hidden pt-16 pb-20 md:pt-24 md:pb-32">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(var(--primary)/0.15),transparent)]" />
-          <div className="container relative z-10">
-            <div className="max-w-4xl mx-auto text-center space-y-8">
-              <Badge variant="outline" className="px-4 py-2 border-primary/20 text-primary bg-primary/5 rounded-full animate-fade-in shadow-sm">
-                <Sparkles className="h-4 w-4 mr-2 fill-primary" />
+          <div className="container relative z-10 px-4">
+            <div className="max-w-4xl mx-auto text-center space-y-6 md:space-y-8">
+              <Badge variant="outline" className="px-3 py-1.5 text-xs sm:text-sm border-primary/20 text-primary bg-primary/5 rounded-full animate-fade-in shadow-sm">
+                <Sparkles className="h-3.5 w-3.5 mr-2 fill-primary" />
                 The Future of Learning is Here
               </Badge>
-              <h1 className="text-5xl md:text-8xl font-black tracking-tight leading-[1.0] animate-fade-in" style={{ animationDelay: '0.1s' }}>
-                Your All-in-One <br/>
-                <span className="text-primary italic">AI Study Engine.</span>
+              <h1 className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tight leading-[1.05] animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                Your All-in-One{" "}
+                <span className="text-primary italic block sm:inline">AI Study Engine.</span>
               </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-fade-in font-medium" style={{ animationDelay: '0.2s' }}>
-                Transform static notes into interactive learning experiences. Generate AI quizzes, 
-                flashcards, and master summaries in seconds. Stop storing content—start passing exams.
+              <p className="text-base sm:text-lg md:text-xl text-foreground/80 max-w-2xl mx-auto leading-relaxed animate-fade-in font-medium px-2" style={{ animationDelay: '0.2s' }}>
+                Transform static notes into interactive learning experiences. Generate AI quizzes,
+                flashcards, and master summaries in seconds.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-                <Button size="lg" asChild className="h-16 px-10 rounded-full text-lg font-black shadow-2xl shadow-primary/30 hover:scale-105 transition-all">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2 sm:pt-4 animate-fade-in w-full" style={{ animationDelay: '0.3s' }}>
+                <Button size="lg" asChild className="w-full sm:w-auto h-14 sm:h-16 px-8 sm:px-10 rounded-full text-base sm:text-lg font-black shadow-2xl shadow-primary/30 hover:scale-105 transition-all">
                   <Link to="/register">Start Learning Free</Link>
                 </Button>
-                <Button size="lg" variant="outline" asChild className="h-16 px-10 rounded-full text-lg font-bold hover:bg-secondary border-2">
+                <Button size="lg" variant="outline" asChild className="w-full sm:w-auto h-14 sm:h-16 px-8 sm:px-10 rounded-full text-base sm:text-lg font-bold hover:bg-secondary border-2">
                   <Link to="/dashboard">Explore Library</Link>
                 </Button>
               </div>
-              
-              <div className="pt-12 flex items-center justify-center gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                <div className="flex items-center gap-2 font-black italic">AI-POWERED</div>
-                <div className="flex items-center gap-2 font-black italic">EXAM-READY</div>
-                <div className="flex items-center gap-2 font-black italic">COMMUNITY-DRIVEN</div>
+
+              <div className="pt-8 md:pt-12 flex flex-wrap items-center justify-center gap-4 sm:gap-8 opacity-60 text-xs sm:text-sm">
+                <div className="font-black italic">AI-POWERED</div>
+                <div className="font-black italic">EXAM-READY</div>
+                <div className="font-black italic">COMMUNITY-DRIVEN</div>
               </div>
             </div>
           </div>
