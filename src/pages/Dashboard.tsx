@@ -214,8 +214,8 @@ const Dashboard = () => {
             {currentView === "today" ? (
               <div className="space-y-10 animate-fade-in">
                 <header>
-                  <h1 className="text-4xl font-black mb-2">Welcome back, {profile?.full_name?.split(' ')[0] || "Scholar"}! 👋</h1>
-                  <p className="text-muted-foreground font-medium">Here's what's happening on your academic journey today.</p>
+                  <h1 className="text-2xl sm:text-4xl font-black mb-2">Welcome back, {profile?.full_name?.split(' ')[0] || "Scholar"}! 👋</h1>
+                  <p className="text-sm sm:text-base text-muted-foreground font-medium">Here's what's happening on your academic journey today.</p>
                 </header>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
