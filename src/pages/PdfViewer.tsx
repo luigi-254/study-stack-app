@@ -249,34 +249,39 @@ const PdfViewer = () => {
             </div>
 
             {/* Reader Actions */}
-            <div className="flex flex-wrap gap-3">
-              <Button 
-                variant={liked ? "default" : "outline"} 
-                className={`rounded-full px-8 font-black transition-all ${liked ? "shadow-lg shadow-primary/20" : "border-primary/20 text-primary hover:bg-primary/5"}`}
+            <div className="flex flex-wrap gap-2 sm:gap-3">
+              <Button
+                variant={liked ? "default" : "outline"}
+                size="sm"
+                className={`rounded-full px-4 sm:px-8 sm:h-10 font-black transition-all ${liked ? "shadow-lg shadow-primary/20" : "border-primary/20 text-primary hover:bg-primary/5"}`}
                 onClick={toggleLike}
               >
-                <Heart className={`h-4 w-4 mr-2 ${liked ? "fill-white" : ""}`} /> 
-                {liked ? "Liked" : "Like"}
+                <Heart className={`h-4 w-4 sm:mr-2 ${liked ? "fill-white" : ""}`} />
+                <span className="hidden sm:inline">{liked ? "Liked" : "Like"}</span>
               </Button>
-              <Button 
-                variant={bookmarked ? "default" : "outline"} 
-                className={`rounded-full px-8 font-black transition-all ${bookmarked ? "shadow-lg shadow-primary/20" : "border-primary/20 text-primary hover:bg-primary/5"}`}
+              <Button
+                variant={bookmarked ? "default" : "outline"}
+                size="sm"
+                className={`rounded-full px-4 sm:px-8 sm:h-10 font-black transition-all ${bookmarked ? "shadow-lg shadow-primary/20" : "border-primary/20 text-primary hover:bg-primary/5"}`}
                 onClick={toggleBookmark}
               >
-                <Bookmark className={`h-4 w-4 mr-2 ${bookmarked ? "fill-white" : ""}`} /> 
-                {bookmarked ? "Bookmarked" : "Bookmark"}
+                <Bookmark className={`h-4 w-4 sm:mr-2 ${bookmarked ? "fill-white" : ""}`} />
+                <span className="hidden sm:inline">{bookmarked ? "Bookmarked" : "Bookmark"}</span>
               </Button>
-              <Button variant="ghost" className="rounded-full px-6 font-bold hover:bg-secondary" onClick={copyToClipboard}>
-                <Share2 className="h-4 w-4 mr-2" /> Share
+              <Button variant="ghost" size="sm" className="rounded-full px-4 sm:px-6 sm:h-10 font-bold hover:bg-secondary" onClick={copyToClipboard}>
+                <Share2 className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Share</span>
               </Button>
-              
+
               <div className="ml-auto flex items-center gap-3">
-                <Button 
-                  asChild 
-                  className="rounded-full px-8 font-black shadow-lg shadow-primary/20 hover:scale-105 transition-all bg-primary"
+                <Button
+                  asChild
+                  size="sm"
+                  className="rounded-full px-4 sm:px-8 sm:h-10 font-black shadow-lg shadow-primary/20 hover:scale-105 transition-all bg-primary"
                 >
                   <a href={`${note?.file_url}`} target="_blank" rel="noopener noreferrer">
-                    <Download className="h-4 w-4 mr-2" /> Download PDF
+                    <Download className="h-4 w-4 sm:mr-2" />
+                    <span className="hidden sm:inline">Download PDF</span>
                   </a>
                 </Button>
               </div>
