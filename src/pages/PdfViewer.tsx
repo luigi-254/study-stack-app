@@ -192,7 +192,7 @@ const PdfViewer = () => {
                  )}
                </div>
 
-               <h1 className="text-4xl md:text-5xl font-black leading-tight tracking-tight text-foreground">
+               <h1 className="text-2xl sm:text-4xl md:text-5xl font-black leading-tight tracking-tight text-foreground break-words">
                  {note?.title}
                </h1>
 
