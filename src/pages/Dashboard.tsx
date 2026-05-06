@@ -7,8 +7,9 @@ import {
   Search, FileText, FolderOpen, 
   CheckCircle2, User, LogOut, MessageSquare, 
   Filter, Grid, List as ListIcon, X, PlusCircle,
-  LayoutDashboard, Zap, Brain, Sparkles, Clock, History
+  LayoutDashboard, Zap, Brain, Sparkles, Clock, History, Menu
 } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUserRole } from "@/hooks/useUserRole";
 import { supabase } from "@/integrations/supabase/client";
