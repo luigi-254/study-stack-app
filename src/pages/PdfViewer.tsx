@@ -196,30 +196,30 @@ const PdfViewer = () => {
                  {note?.title}
                </h1>
 
-               <div className="flex flex-wrap items-center justify-between gap-6 py-8 border-y border-border/50">
-                  <div className="flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-primary to-orange-400 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-primary/20">
+               <div className="flex flex-wrap items-center justify-between gap-4 sm:gap-6 py-6 sm:py-8 border-y border-border/50">
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-2xl bg-gradient-to-br from-primary to-orange-400 flex items-center justify-center text-white font-black text-lg sm:text-xl shadow-lg shadow-primary/20">
                       {note?.title.charAt(0)}
                     </div>
                     <div>
-                      <p className="font-black text-foreground">{"NoteHub Scholar"}</p>
+                      <p className="font-black text-sm sm:text-base text-foreground">{"NoteHub Scholar"}</p>
                       <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground">Premium Study Material</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-4 sm:gap-6">
                     <div className="flex flex-col items-center">
-                      <span className="text-xl font-black">{note?.views_count || 0}</span>
+                      <span className="text-base sm:text-xl font-black">{note?.views_count || 0}</span>
                       <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Readers</span>
                     </div>
                     <div className="h-8 w-px bg-border/50" />
                     <div className="flex flex-col items-center">
-                      <span className="text-xl font-black">128</span>
-                      <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">XP Value</span>
+                      <span className="text-base sm:text-xl font-black">128</span>
+                      <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">XP</span>
                     </div>
                     <div className="h-8 w-px bg-border/50" />
                     <div className="flex flex-col items-center">
-                      <span className="text-xl font-black">4.9</span>
+                      <span className="text-base sm:text-xl font-black">4.9</span>
                       <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Rating</span>
                     </div>
                   </div>
