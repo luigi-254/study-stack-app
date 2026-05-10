@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { 
   BookOpen, Menu, X, LogOut, ChevronDown, 
   Search, PlusCircle, User, BookMarked, Settings, LayoutDashboard,
@@ -26,6 +26,8 @@ const Navbar = () => {
   const { user, profile, signOut } = useAuth();
   const { isAdmin } = useUserRole();
   const navigate = useNavigate();
+  const location = useLocation();
+  const showAIAssistant = !!user && location.pathname !== "/";
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -161,8 +163,8 @@ const Navbar = () => {
         </div>
       </div>
       
-      {/* AI Assistant Overlay */}
-      <AIAssistant />
+      {/* AI Assistant Overlay - only for signed-in users, hidden on landing */}
+      {showAIAssistant && <AIAssistant />}
 
       {mobileOpen && (
         <div className="md:hidden border-t bg-background p-6 space-y-6 animate-fade-in absolute top-full left-0 w-full shadow-xl">
