@@ -64,7 +64,7 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
     return (
       <Button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 h-11 w-11 rounded-full shadow-2xl shadow-primary/40 p-0"
+        className="fixed bottom-4 left-1/2 -translate-x-1/2 h-11 w-11 rounded-full shadow-2xl shadow-primary/40 p-0 z-50"
       >
         <Sparkles className="h-4 w-4" />
       </Button>
@@ -72,7 +72,7 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
   }
 
   return (
-    <div className={`fixed bottom-4 right-4 z-50 bg-white border shadow-2xl rounded-2xl overflow-hidden flex flex-col transition-all duration-300 ${isMinimized ? "h-12 w-52" : "h-[420px] w-[280px] sm:w-80"}`}>
+    <div className={`fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-white border shadow-2xl rounded-2xl overflow-hidden flex flex-col transition-all duration-300 ${isMinimized ? "h-12 w-52" : "h-[420px] w-[280px] sm:w-80"}`}>
       {/* Header */}
       <div className="bg-primary px-3 py-2 flex items-center justify-between text-white shrink-0">
         <div className="flex items-center gap-2">
