@@ -163,8 +163,8 @@ const Navbar = () => {
         </div>
       </div>
       
-      {/* AI Assistant Overlay */}
-      <AIAssistant />
+      {/* AI Assistant Overlay - only for signed-in users, hidden on landing */}
+      {showAIAssistant && <AIAssistant />}
 
       {mobileOpen && (
         <div className="md:hidden border-t bg-background p-6 space-y-6 animate-fade-in absolute top-full left-0 w-full shadow-xl">
