@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { 
   BookOpen, Menu, X, LogOut, ChevronDown, 
   Search, PlusCircle, User, BookMarked, Settings, LayoutDashboard,
