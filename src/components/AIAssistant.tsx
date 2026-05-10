@@ -74,19 +74,19 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
   return (
     <div className={`fixed bottom-4 right-4 z-50 bg-white border shadow-2xl rounded-2xl overflow-hidden flex flex-col transition-all duration-300 ${isMinimized ? "h-12 w-52" : "h-[420px] w-[280px] sm:w-80"}`}>
       {/* Header */}
-      <div className="bg-primary p-4 flex items-center justify-between text-white shrink-0">
+      <div className="bg-primary px-3 py-2 flex items-center justify-between text-white shrink-0">
         <div className="flex items-center gap-2">
-          <div className="h-8 w-8 bg-white/20 rounded-lg flex items-center justify-center">
-            <Sparkles className="h-4 w-4" />
+          <div className="h-6 w-6 bg-white/20 rounded-md flex items-center justify-center">
+            <Sparkles className="h-3 w-3" />
           </div>
-          <span className="font-black text-sm uppercase tracking-widest">Study AI</span>
+          <span className="font-black text-xs uppercase tracking-widest">Study AI</span>
         </div>
-        <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/10" onClick={() => setIsMinimized(!isMinimized)}>
-            {isMinimized ? <Maximize2 className="h-4 w-4" /> : <Minimize2 className="h-4 w-4" />}
+        <div className="flex items-center gap-0.5">
+          <Button variant="ghost" size="icon" className="h-7 w-7 text-white hover:bg-white/10" onClick={() => setIsMinimized(!isMinimized)}>
+            {isMinimized ? <Maximize2 className="h-3.5 w-3.5" /> : <Minimize2 className="h-3.5 w-3.5" />}
           </Button>
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/10" onClick={() => setIsOpen(false)}>
-            <X className="h-4 w-4" />
+          <Button variant="ghost" size="icon" className="h-7 w-7 text-white hover:bg-white/10" onClick={() => setIsOpen(false)}>
+            <X className="h-3.5 w-3.5" />
           </Button>
         </div>
       </div>
