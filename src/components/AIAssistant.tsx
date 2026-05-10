@@ -94,10 +94,10 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
       {!isMinimized && (
         <>
           {/* Messages */}
-          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-secondary/10">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-2.5 bg-secondary/10">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[85%] p-3 rounded-2xl text-sm font-medium leading-relaxed shadow-sm ${
+                <div className={`max-w-[85%] px-2.5 py-2 rounded-xl text-xs font-medium leading-relaxed shadow-sm ${
                   m.role === "user" 
                     ? "bg-primary text-white rounded-tr-none" 
                     : "bg-white text-foreground rounded-tl-none border"
@@ -108,9 +108,9 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
             ))}
             {loading && (
               <div className="flex justify-start">
-                <div className="bg-white border p-3 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                  <span className="text-xs font-bold text-muted-foreground italic">Thinking...</span>
+                <div className="bg-white border px-2.5 py-2 rounded-xl rounded-tl-none shadow-sm flex items-center gap-2">
+                  <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
+                  <span className="text-[10px] font-bold text-muted-foreground italic">Thinking...</span>
                 </div>
               </div>
             )}
@@ -118,7 +118,7 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
 
           {/* Quick Prompts */}
           {messages.length === 1 && (
-            <div className="px-4 pb-2 flex flex-wrap gap-2">
+            <div className="px-3 pb-2 flex flex-wrap gap-1.5">
               {[
                 { icon: BookOpen, text: "Explain this topic" },
                 { icon: Brain, text: "Summarize key points" },
@@ -127,24 +127,24 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
                 <button
                   key={i}
                   onClick={() => { setInput(p.text); }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-white border rounded-full text-[10px] font-bold text-muted-foreground hover:border-primary hover:text-primary transition-all shadow-sm"
+                  className="flex items-center gap-1 px-2 py-1 bg-white border rounded-full text-[9px] font-bold text-muted-foreground hover:border-primary hover:text-primary transition-all shadow-sm"
                 >
-                  <p.icon className="h-3 w-3" /> {p.text}
+                  <p.icon className="h-2.5 w-2.5" /> {p.text}
                 </button>
               ))}
             </div>
           )}
 
           {/* Input */}
-          <form onSubmit={handleSend} className="p-4 border-t bg-white flex items-center gap-2">
+          <form onSubmit={handleSend} className="p-2.5 border-t bg-white flex items-center gap-1.5">
             <Input
               placeholder="Ask me anything..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="rounded-full bg-secondary/50 border-none h-11 focus-visible:ring-primary"
+              className="rounded-full bg-secondary/50 border-none h-9 text-xs focus-visible:ring-primary"
             />
-            <Button type="submit" disabled={!input.trim() || loading} className="h-11 w-11 rounded-full p-0 shrink-0 shadow-lg shadow-primary/20">
-              <Send className="h-5 w-5" />
+            <Button type="submit" disabled={!input.trim() || loading} className="h-9 w-9 rounded-full p-0 shrink-0 shadow-md shadow-primary/20">
+              <Send className="h-4 w-4" />
             </Button>
           </form>
         </>
