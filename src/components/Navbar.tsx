@@ -26,6 +26,8 @@ const Navbar = () => {
   const { user, profile, signOut } = useAuth();
   const { isAdmin } = useUserRole();
   const navigate = useNavigate();
+  const location = useLocation();
+  const showAIAssistant = !!user && location.pathname !== "/";
 
   useEffect(() => {
     const fetchCategories = async () => {
