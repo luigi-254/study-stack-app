@@ -64,15 +64,15 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
     return (
       <Button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-2xl shadow-primary/40 p-0 animate-bounce"
+        className="fixed bottom-4 right-4 h-11 w-11 rounded-full shadow-2xl shadow-primary/40 p-0"
       >
-        <Sparkles className="h-6 w-6" />
+        <Sparkles className="h-4 w-4" />
       </Button>
     );
   }
 
   return (
-    <div className={`fixed bottom-6 right-6 z-50 bg-white border shadow-2xl rounded-3xl overflow-hidden flex flex-col transition-all duration-300 ${isMinimized ? "h-16 w-64" : "h-[500px] w-80 md:w-96"}`}>
+    <div className={`fixed bottom-4 right-4 z-50 bg-white border shadow-2xl rounded-2xl overflow-hidden flex flex-col transition-all duration-300 ${isMinimized ? "h-12 w-52" : "h-[420px] w-[280px] sm:w-80"}`}>
       {/* Header */}
       <div className="bg-primary p-4 flex items-center justify-between text-white shrink-0">
         <div className="flex items-center gap-2">
