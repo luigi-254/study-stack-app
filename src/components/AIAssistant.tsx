@@ -154,7 +154,7 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
     <div
       ref={containerRef}
       style={positionStyle}
-      className={`fixed ${defaultPosClass} z-50 bg-white border shadow-2xl rounded-2xl overflow-hidden flex flex-col transition-[height,width] duration-300 ${isMinimized ? "h-12 w-52" : "h-[420px] w-[280px] sm:w-80"}`}
+      className={`fixed ${defaultPosClass} z-50 bg-card text-card-foreground border shadow-2xl rounded-2xl overflow-hidden flex flex-col transition-[height,width] duration-300 ${isMinimized ? "h-12 w-52" : "h-[420px] w-[280px] sm:w-80"}`}
     >
       {/* Header (drag handle) */}
       <div
