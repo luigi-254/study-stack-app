@@ -169,10 +169,10 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
           <span className="font-black text-xs uppercase tracking-widest">Study AI</span>
         </div>
         <div className="flex items-center gap-0.5" onPointerDown={(e) => e.stopPropagation()}>
-          <Button variant="ghost" size="icon" className="h-7 w-7 text-white hover:bg-white/10" onClick={() => setIsMinimized(!isMinimized)}>
+          <Button variant="ghost" size="icon" className="h-7 w-7 text-primary-foreground hover:bg-white/10" onClick={() => setIsMinimized(!isMinimized)}>
             {isMinimized ? <Maximize2 className="h-3.5 w-3.5" /> : <Minimize2 className="h-3.5 w-3.5" />}
           </Button>
-          <Button variant="ghost" size="icon" className="h-7 w-7 text-white hover:bg-white/10" onClick={() => setIsOpen(false)}>
+          <Button variant="ghost" size="icon" className="h-7 w-7 text-primary-foreground hover:bg-white/10" onClick={() => setIsOpen(false)}>
             <X className="h-3.5 w-3.5" />
           </Button>
         </div>
