@@ -214,7 +214,7 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
                 <button
                   key={i}
                   onClick={() => { setInput(p.text); }}
-                  className="flex items-center gap-1 px-2 py-1 bg-white border rounded-full text-[9px] font-bold text-muted-foreground hover:border-primary hover:text-primary transition-all shadow-sm"
+                  className="flex items-center gap-1 px-2 py-1 bg-card text-muted-foreground border rounded-full text-[9px] font-bold hover:border-primary hover:text-primary transition-all shadow-sm"
                 >
                   <p.icon className="h-2.5 w-2.5" /> {p.text}
                 </button>
