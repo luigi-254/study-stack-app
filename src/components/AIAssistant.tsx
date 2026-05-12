@@ -223,7 +223,7 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
           )}
 
           {/* Input */}
-          <form onSubmit={handleSend} className="p-2.5 border-t bg-white flex items-center gap-1.5">
+          <form onSubmit={handleSend} className="p-2.5 border-t bg-card flex items-center gap-1.5">
             <Input
               placeholder="Ask me anything..."
               value={input}
