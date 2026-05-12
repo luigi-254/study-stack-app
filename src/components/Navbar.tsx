@@ -57,7 +57,14 @@ const Navbar = () => {
         alt="Study Stack logo"
         width={160}
         height={160}
-        className="h-10 w-auto group-hover:scale-105 transition-transform duration-300"
+        className="h-10 w-auto group-hover:scale-105 transition-transform duration-300 block dark:hidden"
+      />
+      <img
+        src="/logo-dark.png"
+        alt="Study Stack logo"
+        width={160}
+        height={160}
+        className="h-10 w-auto group-hover:scale-105 transition-transform duration-300 hidden dark:block"
       />
     </Link>
   );
