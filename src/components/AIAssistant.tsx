@@ -159,7 +159,7 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
       {/* Header (drag handle) */}
       <div
         onPointerDown={startDrag}
-        className="bg-primary px-3 py-2 flex items-center justify-between text-white shrink-0 cursor-grab active:cursor-grabbing touch-none select-none"
+        className="bg-primary px-3 py-2 flex items-center justify-between text-primary-foreground shrink-0 cursor-grab active:cursor-grabbing touch-none select-none"
       >
         <div className="flex items-center gap-2">
           <GripVertical className="h-3.5 w-3.5 opacity-70" />
