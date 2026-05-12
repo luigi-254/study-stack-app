@@ -154,12 +154,12 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
     <div
       ref={containerRef}
       style={positionStyle}
-      className={`fixed ${defaultPosClass} z-50 bg-white border shadow-2xl rounded-2xl overflow-hidden flex flex-col transition-[height,width] duration-300 ${isMinimized ? "h-12 w-52" : "h-[420px] w-[280px] sm:w-80"}`}
+      className={`fixed ${defaultPosClass} z-50 bg-card text-card-foreground border shadow-2xl rounded-2xl overflow-hidden flex flex-col transition-[height,width] duration-300 ${isMinimized ? "h-12 w-52" : "h-[420px] w-[280px] sm:w-80"}`}
     >
       {/* Header (drag handle) */}
       <div
         onPointerDown={startDrag}
-        className="bg-primary px-3 py-2 flex items-center justify-between text-white shrink-0 cursor-grab active:cursor-grabbing touch-none select-none"
+        className="bg-primary px-3 py-2 flex items-center justify-between text-primary-foreground shrink-0 cursor-grab active:cursor-grabbing touch-none select-none"
       >
         <div className="flex items-center gap-2">
           <GripVertical className="h-3.5 w-3.5 opacity-70" />
@@ -169,10 +169,10 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
           <span className="font-black text-xs uppercase tracking-widest">Study AI</span>
         </div>
         <div className="flex items-center gap-0.5" onPointerDown={(e) => e.stopPropagation()}>
-          <Button variant="ghost" size="icon" className="h-7 w-7 text-white hover:bg-white/10" onClick={() => setIsMinimized(!isMinimized)}>
+          <Button variant="ghost" size="icon" className="h-7 w-7 text-primary-foreground hover:bg-white/10" onClick={() => setIsMinimized(!isMinimized)}>
             {isMinimized ? <Maximize2 className="h-3.5 w-3.5" /> : <Minimize2 className="h-3.5 w-3.5" />}
           </Button>
-          <Button variant="ghost" size="icon" className="h-7 w-7 text-white hover:bg-white/10" onClick={() => setIsOpen(false)}>
+          <Button variant="ghost" size="icon" className="h-7 w-7 text-primary-foreground hover:bg-white/10" onClick={() => setIsOpen(false)}>
             <X className="h-3.5 w-3.5" />
           </Button>
         </div>
@@ -181,13 +181,13 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
       {!isMinimized && (
         <>
           {/* Messages */}
-          <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-2.5 bg-secondary/10">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-2.5 bg-secondary/30">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div className={`max-w-[85%] px-2.5 py-2 rounded-xl text-xs font-medium leading-relaxed shadow-sm ${
                   m.role === "user" 
-                    ? "bg-primary text-white rounded-tr-none" 
-                    : "bg-white text-foreground rounded-tl-none border"
+                    ? "bg-primary text-primary-foreground rounded-tr-none" 
+                    : "bg-card text-card-foreground rounded-tl-none border"
                 }`}>
                   {m.content}
                 </div>
@@ -195,7 +195,7 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
             ))}
             {loading && (
               <div className="flex justify-start">
-                <div className="bg-white border px-2.5 py-2 rounded-xl rounded-tl-none shadow-sm flex items-center gap-2">
+                <div className="bg-card text-card-foreground border px-2.5 py-2 rounded-xl rounded-tl-none shadow-sm flex items-center gap-2">
                   <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
                   <span className="text-[10px] font-bold text-muted-foreground italic">Thinking...</span>
                 </div>
@@ -214,7 +214,7 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
                 <button
                   key={i}
                   onClick={() => { setInput(p.text); }}
-                  className="flex items-center gap-1 px-2 py-1 bg-white border rounded-full text-[9px] font-bold text-muted-foreground hover:border-primary hover:text-primary transition-all shadow-sm"
+                  className="flex items-center gap-1 px-2 py-1 bg-card text-muted-foreground border rounded-full text-[9px] font-bold hover:border-primary hover:text-primary transition-all shadow-sm"
                 >
                   <p.icon className="h-2.5 w-2.5" /> {p.text}
                 </button>
@@ -223,7 +223,7 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
           )}
 
           {/* Input */}
-          <form onSubmit={handleSend} className="p-2.5 border-t bg-white flex items-center gap-1.5">
+          <form onSubmit={handleSend} className="p-2.5 border-t bg-card flex items-center gap-1.5">
             <Input
               placeholder="Ask me anything..."
               value={input}
