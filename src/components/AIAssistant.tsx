@@ -181,13 +181,13 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
       {!isMinimized && (
         <>
           {/* Messages */}
-          <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-2.5 bg-secondary/10">
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-2.5 bg-secondary/30">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div className={`max-w-[85%] px-2.5 py-2 rounded-xl text-xs font-medium leading-relaxed shadow-sm ${
                   m.role === "user" 
-                    ? "bg-primary text-white rounded-tr-none" 
-                    : "bg-white text-foreground rounded-tl-none border"
+                    ? "bg-primary text-primary-foreground rounded-tr-none" 
+                    : "bg-card text-card-foreground rounded-tl-none border"
                 }`}>
                   {m.content}
                 </div>
@@ -195,7 +195,7 @@ export default function AIAssistant({ noteId, context = "" }: AIAssistantProps) 
             ))}
             {loading && (
               <div className="flex justify-start">
-                <div className="bg-white border px-2.5 py-2 rounded-xl rounded-tl-none shadow-sm flex items-center gap-2">
+                <div className="bg-card text-card-foreground border px-2.5 py-2 rounded-xl rounded-tl-none shadow-sm flex items-center gap-2">
                   <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
                   <span className="text-[10px] font-bold text-muted-foreground italic">Thinking...</span>
                 </div>
