@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { FolderOpen, FileText, CheckCircle2, ArrowRight, Search } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import NoteCard from "@/components/NoteCard";
@@ -26,12 +26,14 @@ interface NoteRow {
 
 const Categories = () => {
   const { user } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [categories, setCategories] = useState<Category[]>([]);
   const [notes, setNotes] = useState<NoteRow[]>([]);
   const [progress, setProgress] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(true);
-  const [activeId, setActiveId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+
+  const activeId = searchParams.get("category");
 
   useEffect(() => {
     const load = async () => {
@@ -149,7 +151,13 @@ const Categories = () => {
               return (
                 <button
                   key={cat.id}
-                  onClick={() => setActiveId(isActive ? null : cat.id)}
+                  onClick={() => {
+                    if (activeId === cat.id) {
+                      setSearchParams({});
+                    } else {
+                      setSearchParams({ category: cat.id });
+                    }
+                  }}
                   className={`group text-left rounded-2xl border bg-card p-6 space-y-4 transition-all hover:shadow-lg hover:-translate-y-0.5 ${
                     isActive ? "border-primary ring-2 ring-primary/20" : "border-border"
                   }`}
