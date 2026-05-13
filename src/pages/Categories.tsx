@@ -151,7 +151,13 @@ const Categories = () => {
               return (
                 <button
                   key={cat.id}
-                  onClick={() => setActiveId(isActive ? null : cat.id)}
+                  onClick={() => {
+                    if (activeId === cat.id) {
+                      setSearchParams({});
+                    } else {
+                      setSearchParams({ category: cat.id });
+                    }
+                  }}
                   className={`group text-left rounded-2xl border bg-card p-6 space-y-4 transition-all hover:shadow-lg hover:-translate-y-0.5 ${
                     isActive ? "border-primary ring-2 ring-primary/20" : "border-border"
                   }`}
