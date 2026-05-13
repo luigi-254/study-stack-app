@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { FolderOpen, FileText, CheckCircle2, ArrowRight, Search } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import NoteCard from "@/components/NoteCard";
