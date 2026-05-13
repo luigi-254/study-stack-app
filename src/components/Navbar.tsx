@@ -85,6 +85,9 @@ const Navbar = () => {
               <DropdownMenuItem asChild className="rounded-xl py-2 font-bold cursor-pointer">
                 <Link to="/dashboard?view=notes">Browse All</Link>
               </DropdownMenuItem>
+              <DropdownMenuItem asChild className="rounded-xl py-2 font-bold cursor-pointer">
+                <Link to="/categories">All Categories</Link>
+              </DropdownMenuItem>
               <div className="h-px bg-border my-1" />
               {categories.map((cat) => (
                 <DropdownMenuItem key={cat.id} asChild className="rounded-xl py-2 font-bold cursor-pointer">
