@@ -26,12 +26,14 @@ interface NoteRow {
 
 const Categories = () => {
   const { user } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [categories, setCategories] = useState<Category[]>([]);
   const [notes, setNotes] = useState<NoteRow[]>([]);
   const [progress, setProgress] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(true);
-  const [activeId, setActiveId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+
+  const activeId = searchParams.get("category");
 
   useEffect(() => {
     const load = async () => {
