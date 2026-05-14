@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { ExternalLink, GraduationCap, Search } from "lucide-react";
+import { Link } from "react-router-dom";
+import { BookOpen, CheckCircle2, ExternalLink, GraduationCap, Search } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -127,7 +128,7 @@ const Universities = () => {
             </div>
 
             {selectedUniversity && (
-              <div className="rounded-xl border bg-muted/40 p-5 space-y-3">
+              <div className="rounded-xl border bg-muted/40 p-5 space-y-4">
                 <div>
                   <p className="text-xs uppercase tracking-widest font-bold text-muted-foreground">
                     Selected
@@ -139,16 +140,43 @@ const Universities = () => {
                     </p>
                   )}
                 </div>
-                <Button asChild className="w-full sm:w-auto rounded-full font-bold">
-                  <a
-                    href={selectedUniversity.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Visit {selectedUniversity.name}
-                    <ExternalLink className="h-4 w-4 ml-2" />
-                  </a>
-                </Button>
+
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Button asChild className="rounded-full font-bold flex-1">
+                    <Link
+                      to={`/dashboard?view=notes&search=${encodeURIComponent(
+                        courseName || selectedUniversity.name
+                      )}`}
+                    >
+                      <BookOpen className="h-4 w-4 mr-2" />
+                      {courseName ? "Browse course notes" : "Browse university notes"}
+                    </Link>
+                  </Button>
+                  <Button asChild variant="secondary" className="rounded-full font-bold flex-1">
+                    <Link
+                      to={`/dashboard?view=completed&search=${encodeURIComponent(
+                        courseName || selectedUniversity.name
+                      )}`}
+                    >
+                      <CheckCircle2 className="h-4 w-4 mr-2" />
+                      My progress
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" className="rounded-full font-bold">
+                    <a
+                      href={selectedUniversity.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Official site
+                      <ExternalLink className="h-4 w-4 ml-2" />
+                    </a>
+                  </Button>
+                </div>
+
+                <p className="text-xs text-muted-foreground">
+                  Notes are matched by title/description. Completion is tracked per PDF as you mark it done.
+                </p>
               </div>
             )}
           </Card>
