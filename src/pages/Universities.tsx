@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
-import { ExternalLink, GraduationCap } from "lucide-react";
+import { Check, ChevronsUpDown, ExternalLink, GraduationCap, Search } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -11,16 +12,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 import { kenyanUniversities } from "@/data/kenyanUniversities";
 
 const Universities = () => {
   const [universityName, setUniversityName] = useState<string>("");
   const [courseName, setCourseName] = useState<string>("");
+  const [query, setQuery] = useState("");
 
   const selectedUniversity = useMemo(
     () => kenyanUniversities.find((u) => u.name === universityName),
     [universityName]
   );
+
+  const filteredUniversities = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return kenyanUniversities;
+    return kenyanUniversities.filter(
+      (u) =>
+        u.name.toLowerCase().includes(q) ||
+        u.courses.some((c) => c.toLowerCase().includes(q))
+    );
+  }, [query]);
+
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
