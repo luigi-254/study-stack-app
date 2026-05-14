@@ -55,6 +55,25 @@ const Universities = () => {
 
           <Card className="p-6 space-y-5 rounded-2xl">
             <div className="space-y-2">
+              <label className="text-sm font-bold">Search universities</label>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Type a university or course name..."
+                  className="pl-10 h-12 rounded-xl"
+                />
+              </div>
+              {query && (
+                <p className="text-xs text-muted-foreground">
+                  {filteredUniversities.length} match
+                  {filteredUniversities.length === 1 ? "" : "es"}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-2">
               <label className="text-sm font-bold">University</label>
               <Select
                 value={universityName}
@@ -67,11 +86,17 @@ const Universities = () => {
                   <SelectValue placeholder="Select a university" />
                 </SelectTrigger>
                 <SelectContent className="max-h-80">
-                  {kenyanUniversities.map((u) => (
-                    <SelectItem key={u.name} value={u.name}>
-                      {u.name}
-                    </SelectItem>
-                  ))}
+                  {filteredUniversities.length === 0 ? (
+                    <div className="py-6 text-center text-sm text-muted-foreground">
+                      No universities found
+                    </div>
+                  ) : (
+                    filteredUniversities.map((u) => (
+                      <SelectItem key={u.name} value={u.name}>
+                        {u.name}
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
             </div>
