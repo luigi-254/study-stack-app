@@ -15,6 +15,7 @@ import AdminDashboard from "./pages/AdminDashboard.tsx";
 import UpdatePassword from "./pages/UpdatePassword.tsx";
 import Install from "./pages/Install.tsx";
 import Categories from "./pages/Categories.tsx";
+import Universities from "./pages/Universities.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 import { ThemeProvider } from "@/components/theme-provider";
@@ -39,6 +40,7 @@ const App = () => (
               <Route path="/update-password" element={<UpdatePassword />} />
               <Route path="/install" element={<Install />} />
               <Route path="/categories" element={<Categories />} />
+              <Route path="/universities" element={<Universities />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AuthProvider>
