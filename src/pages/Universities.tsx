@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { BookOpen, CheckCircle2, ExternalLink, GraduationCap, Search } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -53,7 +52,7 @@ const Universities = () => {
             </p>
           </header>
 
-          <Card className="p-6 space-y-5 rounded-2xl">
+          <div className="p-6 space-y-5 rounded-2xl border bg-card">
             <div className="space-y-2">
               <label className="text-sm font-bold">Search universities</label>
               <div className="relative">
@@ -179,7 +178,7 @@ const Universities = () => {
                 </p>
               </div>
             )}
-          </Card>
+          </div>
         </div>
       </main>
       <Footer />
