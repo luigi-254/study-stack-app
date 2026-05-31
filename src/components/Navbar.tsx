@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { 
   BookOpen, Menu, X, LogOut, ChevronDown, 
   Search, PlusCircle, User, BookMarked, Settings, LayoutDashboard,
-  Sparkles, Zap, Brain
+  Sparkles, Zap, Brain, GraduationCap
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
@@ -191,11 +191,35 @@ const Navbar = () => {
             />
           </form>
           
+          <div className="space-y-3">
+            <Link 
+              to="/dashboard?view=notes" 
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 text-sm font-bold p-3 bg-muted rounded-lg hover:bg-muted/80 transition-colors"
+            >
+              <BookOpen className="h-4 w-4" /> Browse All
+            </Link>
+            <Link 
+              to="/categories" 
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 text-sm font-bold p-3 bg-muted rounded-lg hover:bg-muted/80 transition-colors"
+            >
+              <Sparkles className="h-4 w-4" /> All Categories
+            </Link>
+            <Link 
+              to="/universities" 
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 text-sm font-bold p-3 bg-muted rounded-lg hover:bg-muted/80 transition-colors"
+            >
+              <GraduationCap className="h-4 w-4" /> Kenyan Universities
+            </Link>
+          </div>
+
           <div className="space-y-4">
             <h4 className="text-xs font-bold uppercase text-muted-foreground tracking-widest">Categories</h4>
             <div className="grid grid-cols-2 gap-2">
               {categories.slice(0, 6).map(cat => (
-                <Link key={cat.id} to={`/dashboard?category=${encodeURIComponent(cat.name)}`} className="text-sm font-medium p-2 bg-muted rounded-md text-center">
+                <Link key={cat.id} to={`/dashboard?category=${encodeURIComponent(cat.name)}`} onClick={() => setMobileOpen(false)} className="text-sm font-medium p-2 bg-muted rounded-md text-center hover:bg-muted/80 transition-colors">
                   {cat.name}
                 </Link>
               ))}
@@ -218,4 +242,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
