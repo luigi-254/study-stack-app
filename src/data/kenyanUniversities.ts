@@ -201,4 +201,16 @@ export const kenyanUniversities: University[] = [
       "Bachelor of Science in Wildlife Management",
     ],
   },
+  {
+    name: "Kisii University",
+    url: "https://www.kisiiuniversity.ac.ke",
+    courses: [
+      "Bachelor of Education",
+      "Bachelor of Commerce",
+      "Bachelor of Science in Nursing",
+      "Bachelor of Business Administration",
+      "Bachelor of Science in Computer Science",
+      "Bachelor of Arts",
+    ],
+  },
 ];
