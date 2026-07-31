@@ -166,11 +166,29 @@ const Universities = () => {
                       href={selectedUniversity.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={(e) => {
+                        // Preview/embedded iframes can block target="_blank".
+                        // Fall back to a top-level navigation so the link always works.
+                        e.preventDefault();
+                        const win = window.open(
+                          selectedUniversity.url,
+                          "_blank",
+                          "noopener,noreferrer"
+                        );
+                        if (!win) {
+                          try {
+                            (window.top ?? window).location.href = selectedUniversity.url;
+                          } catch {
+                            window.location.href = selectedUniversity.url;
+                          }
+                        }
+                      }}
                     >
                       Official site
                       <ExternalLink className="h-4 w-4 ml-2" />
                     </a>
                   </Button>
+
                 </div>
 
                 <p className="text-xs text-muted-foreground">
