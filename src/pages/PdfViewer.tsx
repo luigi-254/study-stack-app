@@ -37,6 +37,16 @@ interface NoteDetail {
   categories: { name: string } | null;
 }
 
+/** Extract the object path inside the notes-pdfs bucket from a stored URL or raw path. */
+const extractStoragePath = (value?: string | null): string | null => {
+  if (!value) return null;
+  const marker = "/notes-pdfs/";
+  const idx = value.indexOf(marker);
+  if (idx !== -1) return decodeURIComponent(value.slice(idx + marker.length).split("?")[0]);
+  if (!value.startsWith("http")) return value.replace(/^\/+/, "");
+  return null;
+};
+
 const PdfViewer = () => {
   const { id } = useParams();
   const { user } = useAuth();
