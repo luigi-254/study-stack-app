@@ -72,6 +72,17 @@ const PdfViewer = () => {
         }
 
         setNote(data as unknown as NoteDetail);
+
+        // The notes-pdfs bucket is private — resolve a short-lived signed URL
+        const storagePath = extractStoragePath(data.file_url);
+        if (storagePath) {
+          const { data: signed } = await supabase.storage
+            .from("notes-pdfs")
+            .createSignedUrl(storagePath, 60 * 60);
+          setFileUrl(signed?.signedUrl ?? null);
+        } else {
+          setFileUrl(data.file_url ?? null);
+        }
         
         // Increment view count
         supabase.from("notes").update({ views_count: (data.views_count || 0) + 1 }).eq("id", id).then();
