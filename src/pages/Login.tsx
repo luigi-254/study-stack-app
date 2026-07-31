@@ -42,11 +42,13 @@ const Login = () => {
       // Get current user after sign in
       const { data: { user: currentUser } } = await supabase.auth.getUser();
       if (currentUser) {
-        const { data: isAdmin } = await supabase.rpc("has_role", {
-          _user_id: currentUser.id,
-          _role: "admin",
-        });
-        navigate(isAdmin ? "/admin" : "/dashboard");
+        const { data: adminRole } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", currentUser.id)
+          .eq("role", "admin")
+          .maybeSingle();
+        navigate(adminRole ? "/admin" : "/dashboard");
       } else {
         navigate("/dashboard");
       }
