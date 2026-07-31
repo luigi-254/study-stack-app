@@ -5,6 +5,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { openExternal, normalizeUrl } from "@/lib/openExternal";
+
 import {
   Select,
   SelectContent,
@@ -163,31 +165,19 @@ const Universities = () => {
                   </Button>
                   <Button asChild variant="outline" className="rounded-full font-bold">
                     <a
-                      href={selectedUniversity.url}
+                      href={normalizeUrl(selectedUniversity.url)}
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => {
-                        // Preview/embedded iframes can block target="_blank".
-                        // Fall back to a top-level navigation so the link always works.
                         e.preventDefault();
-                        const win = window.open(
-                          selectedUniversity.url,
-                          "_blank",
-                          "noopener,noreferrer"
-                        );
-                        if (!win) {
-                          try {
-                            (window.top ?? window).location.href = selectedUniversity.url;
-                          } catch {
-                            window.location.href = selectedUniversity.url;
-                          }
-                        }
+                        openExternal(selectedUniversity.url);
                       }}
                     >
                       Official site
                       <ExternalLink className="h-4 w-4 ml-2" />
                     </a>
                   </Button>
+
 
                 </div>
 
