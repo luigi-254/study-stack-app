@@ -37,12 +37,23 @@ interface NoteDetail {
   categories: { name: string } | null;
 }
 
+/** Extract the object path inside the notes-pdfs bucket from a stored URL or raw path. */
+const extractStoragePath = (value?: string | null): string | null => {
+  if (!value) return null;
+  const marker = "/notes-pdfs/";
+  const idx = value.indexOf(marker);
+  if (idx !== -1) return decodeURIComponent(value.slice(idx + marker.length).split("?")[0]);
+  if (!value.startsWith("http")) return value.replace(/^\/+/, "");
+  return null;
+};
+
 const PdfViewer = () => {
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [note, setNote] = useState<NoteDetail | null>(null);
+  const [fileUrl, setFileUrl] = useState<string | null>(null);
   const [recommendations, setRecommendations] = useState<{ id: string; title: string; categories: { name: string } | null }[]>([]);
   const [completed, setCompleted] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -71,6 +82,17 @@ const PdfViewer = () => {
         }
 
         setNote(data as unknown as NoteDetail);
+
+        // The notes-pdfs bucket is private — resolve a short-lived signed URL
+        const storagePath = extractStoragePath(data.file_url);
+        if (storagePath) {
+          const { data: signed } = await supabase.storage
+            .from("notes-pdfs")
+            .createSignedUrl(storagePath, 60 * 60);
+          setFileUrl(signed?.signedUrl ?? null);
+        } else {
+          setFileUrl(data.file_url ?? null);
+        }
         
         // Increment view count
         supabase.from("notes").update({ views_count: (data.views_count || 0) + 1 }).eq("id", id).then();
@@ -279,7 +301,7 @@ const PdfViewer = () => {
                   size="sm"
                   className="rounded-full px-4 sm:px-8 sm:h-10 font-black shadow-lg shadow-primary/20 hover:scale-105 transition-all bg-primary"
                 >
-                  <a href={`${note?.file_url}`} target="_blank" rel="noopener noreferrer">
+                  <a href={fileUrl ?? "#"} target="_blank" rel="noopener noreferrer">
                     <Download className="h-4 w-4 sm:mr-2" />
                     <span className="hidden sm:inline">Download PDF</span>
                   </a>
@@ -291,9 +313,9 @@ const PdfViewer = () => {
             <div className="relative group">
                <div className="absolute -inset-1 bg-gradient-to-r from-primary/10 to-orange-500/10 rounded-2xl blur-xl opacity-50"></div>
                <div className="relative bg-white dark:bg-card rounded-2xl border shadow-2xl overflow-hidden w-full h-[70vh] sm:h-[80vh] min-h-[500px] max-h-[1200px]">
-                  {note?.file_url ? (
+                  {fileUrl ? (
                     <iframe
-                      src={`${note.file_url}#toolbar=1&navpanes=0`}
+                      src={`${fileUrl}#toolbar=1&navpanes=0`}
                       className="w-full h-full border-none"
                       title={note.title}
                       allow="fullscreen"
