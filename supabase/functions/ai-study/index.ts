@@ -94,8 +94,50 @@ function buildMessages(b: Body) {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
+  // Require an authenticated user — this endpoint spends AI credits.
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader?.startsWith("Bearer ")) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  const supabase = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_ANON_KEY")!,
+    { global: { headers: { Authorization: authHeader } } },
+  );
+  const token = authHeader.replace("Bearer ", "");
+  const { data: claimsData, error: claimsError } = await supabase.auth.getClaims(token);
+  if (claimsError || !claimsData?.claims?.sub) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   try {
     const body = (await req.json()) as Body;
+
+    // Validate input
+    const allowedActions: Action[] = ["quiz", "flashcards", "summary", "ask"];
+    if (!body || !allowedActions.includes(body.action)) {
+      return new Response(JSON.stringify({ error: "Invalid action" }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const str = (v: unknown, max: number) =>
+      typeof v === "string" ? v.slice(0, max) : undefined;
+    body.noteTitle = str(body.noteTitle, 300);
+    body.noteDescription = str(body.noteDescription, 4000);
+    body.question = str(body.question, 2000);
+    body.context = str(body.context, 8000);
+    body.count = Math.min(Math.max(Number(body.count) || 5, 1), 20);
+    if (body.action === "ask" && !body.question) {
+      return new Response(JSON.stringify({ error: "A question is required" }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const apiKey = Deno.env.get("LOVABLE_API_KEY");
     if (!apiKey) throw new Error("LOVABLE_API_KEY not configured");
 
