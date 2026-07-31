@@ -43,6 +43,7 @@ const PdfViewer = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [note, setNote] = useState<NoteDetail | null>(null);
+  const [fileUrl, setFileUrl] = useState<string | null>(null);
   const [recommendations, setRecommendations] = useState<{ id: string; title: string; categories: { name: string } | null }[]>([]);
   const [completed, setCompleted] = useState(false);
   const [liked, setLiked] = useState(false);
