@@ -301,7 +301,7 @@ const PdfViewer = () => {
                   size="sm"
                   className="rounded-full px-4 sm:px-8 sm:h-10 font-black shadow-lg shadow-primary/20 hover:scale-105 transition-all bg-primary"
                 >
-                  <a href={`${note?.file_url}`} target="_blank" rel="noopener noreferrer">
+                  <a href={fileUrl ?? "#"} target="_blank" rel="noopener noreferrer">
                     <Download className="h-4 w-4 sm:mr-2" />
                     <span className="hidden sm:inline">Download PDF</span>
                   </a>
@@ -313,9 +313,9 @@ const PdfViewer = () => {
             <div className="relative group">
                <div className="absolute -inset-1 bg-gradient-to-r from-primary/10 to-orange-500/10 rounded-2xl blur-xl opacity-50"></div>
                <div className="relative bg-white dark:bg-card rounded-2xl border shadow-2xl overflow-hidden w-full h-[70vh] sm:h-[80vh] min-h-[500px] max-h-[1200px]">
-                  {note?.file_url ? (
+                  {fileUrl ? (
                     <iframe
-                      src={`${note.file_url}#toolbar=1&navpanes=0`}
+                      src={`${fileUrl}#toolbar=1&navpanes=0`}
                       className="w-full h-full border-none"
                       title={note.title}
                       allow="fullscreen"
