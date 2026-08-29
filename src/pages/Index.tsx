@@ -11,6 +11,8 @@ import {
   Brain, Zap, Trophy, MessageSquare, LayoutDashboard
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import NextSteps from "@/components/NextSteps";
+
 
 interface NoteWithStats {
   id: string;
