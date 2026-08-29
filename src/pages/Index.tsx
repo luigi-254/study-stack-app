@@ -239,20 +239,41 @@ const Index = () => {
               </div>
               <div className="relative">
                 <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-[40px] p-8 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-700">
-                   {/* Mock UI elements */}
                    <div className="space-y-6">
                       <div className="flex items-center justify-between">
-                        <div className="h-4 w-32 bg-white/20 rounded-full" />
-                        <div className="h-4 w-12 bg-white/20 rounded-full" />
+                        <p className="text-sm font-black uppercase tracking-widest text-white/80">This Week</p>
+                        <p className="text-sm font-bold text-white/60">Level 4</p>
                       </div>
-                      <div className="h-40 bg-white/5 rounded-3xl flex items-center justify-center">
-                        <LayoutDashboard className="h-16 w-16 text-white/20" />
+                      <div className="bg-white/5 rounded-3xl p-6 space-y-4">
+                        <div className="flex items-center gap-3">
+                          <LayoutDashboard className="h-5 w-5 text-white/70" />
+                          <p className="text-sm font-bold">Weekly goal</p>
+                          <p className="ml-auto text-sm font-black">72%</p>
+                        </div>
+                        <div className="h-2 w-full rounded-full bg-white/15">
+                          <div className="h-2 w-[72%] rounded-full bg-white" />
+                        </div>
+                        <div className="space-y-2 pt-2">
+                          {["Web Development", "Data Structures", "Calculus II"].map((t, i) => (
+                            <div key={t} className="flex items-center justify-between text-sm">
+                              <span className="font-medium text-white/80">{t}</span>
+                              <span className="font-bold text-white/60">{[8, 5, 3][i]} notes</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="h-20 bg-white/5 rounded-2xl" />
-                        <div className="h-20 bg-white/5 rounded-2xl" />
+                        <div className="h-20 bg-white/5 rounded-2xl flex flex-col items-center justify-center">
+                          <p className="text-2xl font-black">12</p>
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-white/60">Day streak</p>
+                        </div>
+                        <div className="h-20 bg-white/5 rounded-2xl flex flex-col items-center justify-center">
+                          <p className="text-2xl font-black">96</p>
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-white/60">Quizzes done</p>
+                        </div>
                       </div>
                    </div>
+
                 </div>
               </div>
             </div>
