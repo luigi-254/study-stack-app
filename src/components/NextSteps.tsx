@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { BookOpen, Brain, PlusCircle, Loader2, LayoutDashboard } from "lucide-react";
+import { BookOpen, Brain, PlusCircle, Loader2, LayoutDashboard, Target, Clock, Settings2 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNextSteps } from "@/hooks/useNextSteps";
+import { useStudyGoals, DEFAULT_GOALS } from "@/hooks/useStudyGoals";
+import StudyGoalsDialog from "@/components/StudyGoalsDialog";
+
 
 const StepRow = ({
   icon: Icon,
