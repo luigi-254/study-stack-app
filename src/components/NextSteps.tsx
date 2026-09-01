@@ -100,8 +100,57 @@ export default function NextSteps() {
         <p className="text-xs text-white/60">{percent}% of the library completed</p>
       </div>
 
+      <div className="rounded-3xl bg-white/5 p-5 space-y-4">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <Target className="h-4 w-4 text-white/70" />
+            <p className="text-xs font-black uppercase tracking-widest text-white/80">Weekly goal</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setGoalsOpen(true)}
+            className="inline-flex items-center gap-1 text-[11px] font-black uppercase tracking-widest text-white/70 hover:text-white"
+          >
+            <Settings2 className="h-3.5 w-3.5" />
+            {goals ? "Edit" : "Set goals"}
+          </button>
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex items-baseline justify-between">
+            <p className="text-sm font-bold">
+              {weeklyCompleted}/{activeGoals.weekly_notes_target} notes this week
+            </p>
+            <p className="text-xs text-white/60">{goalPercent}%</p>
+          </div>
+          <div className="h-2 w-full rounded-full bg-white/15">
+            <div
+              className="h-2 rounded-full bg-white transition-all"
+              style={{ width: `${goalPercent}%` }}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-white/70">
+          <span className="inline-flex items-center gap-1.5">
+            <Clock className="h-3.5 w-3.5" />
+            {activeGoals.session_start?.slice(0, 5)}–{activeGoals.session_end?.slice(0, 5)}
+          </span>
+          <span className="font-bold">{activeGoals.preferred_days.join(" · ") || "No days set"}</span>
+          <span>{activeGoals.weekly_minutes_target} min/week target</span>
+        </div>
+      </div>
+
+      <StudyGoalsDialog
+        open={goalsOpen}
+        onOpenChange={setGoalsOpen}
+        goals={goals}
+        onSave={saveGoals}
+      />
+
       <div className="space-y-3">
         {continueNote && (
+
           <StepRow
             icon={BookOpen}
             label="Continue reading"
