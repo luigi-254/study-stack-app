@@ -170,6 +170,42 @@ export type Database = {
         }
         Relationships: []
       }
+      study_goals: {
+        Row: {
+          created_at: string
+          id: string
+          preferred_days: string[]
+          session_end: string
+          session_start: string
+          updated_at: string
+          user_id: string
+          weekly_minutes_target: number
+          weekly_notes_target: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          preferred_days?: string[]
+          session_end?: string
+          session_start?: string
+          updated_at?: string
+          user_id: string
+          weekly_minutes_target?: number
+          weekly_notes_target?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          preferred_days?: string[]
+          session_end?: string
+          session_start?: string
+          updated_at?: string
+          user_id?: string
+          weekly_minutes_target?: number
+          weekly_notes_target?: number
+        }
+        Relationships: []
+      }
       user_note_progress: {
         Row: {
           completed: boolean
