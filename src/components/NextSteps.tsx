@@ -44,6 +44,10 @@ export default function NextSteps() {
   const { user } = useAuth();
   const { continueNote, nextNote, quizNote, completedCount, totalCount, percent, loading } =
     useNextSteps();
+  const { goals, weeklyCompleted, goalPercent, saveGoals } = useStudyGoals();
+  const [goalsOpen, setGoalsOpen] = useState(false);
+  const activeGoals = goals ?? DEFAULT_GOALS;
+
 
   if (!user) {
     return (
